@@ -2,27 +2,31 @@ package mongo
 
 import (
 	"context"
+	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const uri = ""
+const uri = "mongodb://whatslication:whatslication@localhost:8000/whatslication?authSource=admin"
 
 func NewStorage() (*Storage, error) {
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
-
+	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
-		return nil, err
+		return &Storage{}, err
 	}
-	defer func() {
-		if err = client.Disconnect(context.TODO()); err != nil {
-			panic(err)
-		}
-	}()
+	ctx := context.Background()
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	err = client.Connect(ctx)
+	if err != nil {
+		return &Storage{}, err
+	}
+	DB := client.Database("whatslication")
 
-	db := client.Database("whatslication")
+	users := DB.Collection("users")
+
 	return &Storage{
-		db: db,
-	}, nil
+		users: users,
+	}, err
 }

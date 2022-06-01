@@ -7,10 +7,10 @@ import (
 )
 
 type Storage struct {
-	db *mongo.Database
+	users *mongo.Collection
 }
 
 func (m *Storage) PingDB() error {
 	ctx := context.Background()
-	return m.db.Client().Ping(ctx, nil)
+	return m.users.Database().Client().Ping(ctx, nil)
 }
