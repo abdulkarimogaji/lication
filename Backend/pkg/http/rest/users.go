@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,8 @@ func createUser(cr creating.Service) gin.HandlerFunc {
 		var req creating.User
 		err := c.ShouldBindWith(&req, binding.JSON)
 		if err != nil {
-			errorResponse(c, err)
+			log.Println(err)
+			badRequestResponse(c, err)
 			return
 		}
 		newUser, err := cr.CreateUser(&req)

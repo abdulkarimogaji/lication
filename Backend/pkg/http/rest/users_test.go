@@ -20,8 +20,17 @@ func TestCreateUser(t *testing.T) {
 		New("Success").
 		Handler(testRouter).
 		Post("/users").
-		Body(createUserBody).
+		JSON(createUserBody).
 		Expect(t).
 		Status(http.StatusCreated).
+		End()
+
+	apitest.
+		New("Bad Request").
+		Handler(testRouter).
+		Post("/users").
+		JSON(`{"bad request: "bad request"}`).
+		Expect(t).
+		Status(http.StatusBadRequest).
 		End()
 }

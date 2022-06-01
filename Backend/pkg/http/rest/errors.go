@@ -23,7 +23,7 @@ func getValidatorErrorMsg(fe validator.FieldError, fieldName string) string {
 	return "Unknown error"
 }
 
-func errorResponse(c *gin.Context, err error) {
+func badRequestResponse(c *gin.Context, err error) {
 
 	if err == io.EOF {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -45,9 +45,16 @@ func errorResponse(c *gin.Context, err error) {
 		})
 		return
 	}
-	c.JSON(http.StatusInternalServerError, gin.H{
+	c.JSON(http.StatusBadRequest, gin.H{
 		"error": err.Error(),
 		"data":  nil,
+	})
+}
+
+func errorResponse(c *gin.Context, err error) {
+	c.JSON(http.StatusInternalServerError, gin.H{
+		"data":  nil,
+		"error": err,
 	})
 }
 
