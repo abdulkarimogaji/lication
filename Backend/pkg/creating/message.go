@@ -1,12 +1,9 @@
 package creating
 
-import "time"
-
 type Message struct {
-	Id        string
-	Sender    string
-	Reciever  string
-	Type      string
-	Text      string
-	CreatedAt time.Time
+	Id   string `json:"id"`
+	Text string `json:"text"`
+	// chat id
+	Chat   string `json:"chat"`
+	Sender string `sender:"sender"`
 }

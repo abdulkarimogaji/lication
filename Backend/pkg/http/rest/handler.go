@@ -4,16 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/whatslication/pkg/creating"
-	"github.com/whatslication/pkg/health"
+	"github.com/lication/pkg/health"
 )
-
-func Handler(h health.Service, c creating.Service) *gin.Engine {
-	router := gin.Default()
-	router.GET("/health", healthCheck(h))
-	router.POST("/users", createUser(c))
-	return router
-}
 
 func healthCheck(s health.Service) gin.HandlerFunc {
 	return func(c *gin.Context) {

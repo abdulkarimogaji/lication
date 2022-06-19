@@ -3,8 +3,8 @@ package mongo
 import (
 	"testing"
 
+	"github.com/lication/pkg/listing"
 	"github.com/stretchr/testify/require"
-	"github.com/whatslication/pkg/listing"
 )
 
 func TestCreateUser(t *testing.T) {

@@ -20,7 +20,7 @@ const MainHeader = ({ navigation }: { navigation: NavigationProp<any> }) => {
     <View style={shouldHide ? {height: 0} : styles.container}>
       { !shouldHide &&
         (<>
-          <Text style={styles.headerText}>WhatsLication</Text>
+          <Text style={styles.headerText}>lication</Text>
           <View style={{flexDirection: 'row', marginTop: 20}}>
             <T>
               <MaterialIcons name="search" color="#eee" size={28} style={{marginEnd: 25}} />

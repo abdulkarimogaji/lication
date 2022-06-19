@@ -4,14 +4,13 @@ import (
 	"context"
 	"time"
 
+	"github.com/lication/pkg/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const uri = "mongodb://whatslication:whatslication@localhost:8000/whatslication?authSource=admin"
-
 func NewStorage() (*Storage, error) {
-	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
+	client, err := mongo.NewClient(options.Client().ApplyURI(config.Conf.DbUri))
 	if err != nil {
 		return &Storage{}, err
 	}
@@ -22,11 +21,10 @@ func NewStorage() (*Storage, error) {
 	if err != nil {
 		return &Storage{}, err
 	}
-	DB := client.Database("whatslication")
-
+	DB := client.Database("lication")
 	users := DB.Collection("users")
 
 	return &Storage{
 		users: users,
-	}, err
+	}, nil
 }

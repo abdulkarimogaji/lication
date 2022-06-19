@@ -6,9 +6,10 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/whatslication/pkg/creating"
-	"github.com/whatslication/pkg/health"
-	"github.com/whatslication/pkg/storage/mongo"
+	"github.com/lication/pkg/creating"
+	"github.com/lication/pkg/health"
+	"github.com/lication/pkg/listing"
+	"github.com/lication/pkg/storage/mongo"
 )
 
 var testRouter *gin.Engine
@@ -21,6 +22,8 @@ func TestMain(m *testing.M) {
 	}
 	h := health.NewService(store)
 	cr := creating.NewService(store)
-	testRouter = Handler(h, cr)
+	ls := listing.NewService(store)
+
+	testRouter = ConfigureRoutes(h, cr, ls)
 	os.Exit(m.Run())
 }
