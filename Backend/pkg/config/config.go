@@ -14,10 +14,7 @@ type Config struct {
 var Conf Config
 
 func LoadConfig() error {
-	err := godotenv.Load()
-	if err != nil {
-		return err
-	}
+	godotenv.Load()
 	Conf.DbUri = os.Getenv("DB_CONNECTION_URI")
 	Conf.AppEnv = os.Getenv("APP_ENV")
 
