@@ -7,7 +7,8 @@ import (
 )
 
 type Config struct {
-	DbUri string
+	DbUri  string
+	AppEnv string
 }
 
 var Conf Config
@@ -18,5 +19,10 @@ func LoadConfig() error {
 		return err
 	}
 	Conf.DbUri = os.Getenv("DB_CONNECTION_URI")
+	Conf.AppEnv = os.Getenv("APP_ENV")
+
+	if Conf.AppEnv == "local" {
+		Conf.DbUri = "mongodb://lication:lication@localhost:8000/lication?authSource=admin"
+	}
 	return nil
 }
