@@ -7,16 +7,11 @@
  *
  * @format
  */
-
 import React from 'react';
-import {Text, View} from 'react-native';
+import RootStack from './routes/ContainerStack';
 
 const App = () => {
-  return (
-    <View>
-      <Text>Th We are currntly working on this Part</Text>
-    </View>
-  );
+  return <RootStack />;
 };
 
 export default App;
