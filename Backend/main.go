@@ -13,10 +13,8 @@ import (
 
 func main() {
 
-	err := config.LoadConfig()
-	if err != nil {
-		log.Fatal("Failed to load Config files ", err)
-	}
+	config.LoadConfig()
+
 	s, err := mongo.NewStorage()
 	if err != nil {
 		log.Fatal("Failed to connect to the database ", err)

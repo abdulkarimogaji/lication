@@ -7,11 +7,17 @@
  *
  * @format
  */
-import React from 'react';
+import React, { useState } from 'react';
 import RootStack from './routes/ContainerStack';
+import SignUpStack from './routes/SignUpStack';
 
 const App = () => {
-  return <RootStack />;
+  // check credential manager if user already exists
+  // grab phone Number from user
+  // use phone number to fetch chats
+  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  if (!loggedIn) return <SignUpStack setLoggedIn={setLoggedIn} />
+  else  return <RootStack />;
 };
 
 export default App;
