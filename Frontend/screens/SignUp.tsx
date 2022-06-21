@@ -4,12 +4,15 @@ import {
   TextInput,
   TouchableWithoutFeedback as TWF,
 } from "react-native-gesture-handler";
+import { useDispatch } from "react-redux";
+import { login } from "../store/globalSlice";
 
-const SignUp = ({ navigation, setLoggedIn }: any) => {
+const SignUp = () => {
   const [num, setNum] = useState<string>("");
+  const dispatch = useDispatch();
   const handlePress = () => {
-    setLoggedIn(true)
-  }
+    dispatch(login({ phone: num, phoneId: "" }));
+  };
   return (
     <View style={styles.container}>
       <TWF onPress={Keyboard.dismiss}>

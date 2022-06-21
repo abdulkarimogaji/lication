@@ -8,7 +8,7 @@ import { View } from "react-native";
 
 
 const Stack = createStackNavigator();
-const SignUpStack = ({setLoggedIn}: {setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>}) => {
+const SignUpStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -21,9 +21,7 @@ const SignUpStack = ({setLoggedIn}: {setLoggedIn: React.Dispatch<React.SetStateA
       >
       
         <Stack.Screen name="welcome" component={WelcomeScreen}/>
-        <Stack.Screen name="signup">
-          {props => <SignUp {...props} setLoggedIn={setLoggedIn} />}
-        </Stack.Screen>
+        <Stack.Screen name="signup" component={SignUp}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

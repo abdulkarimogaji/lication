@@ -7,17 +7,31 @@
  *
  * @format
  */
-import React, { useState } from 'react';
-import RootStack from './routes/ContainerStack';
-import SignUpStack from './routes/SignUpStack';
+import React from "react";
+import { Provider, useSelector } from "react-redux";
+import RootStack from "./routes/ContainerStack";
+import SignUpStack from "./routes/SignUpStack";
+import { RootState, store } from "./store/store";
+import { useDispatch } from "react-redux";
+import { getCredentials } from "./store/globalSlice";
 
 const App = () => {
-  // check credential manager if user already exists
-  // grab phone Number from user
-  // use phone number to fetch chats
-  const [loggedIn, setLoggedIn] = useState<boolean>(false)
-  if (!loggedIn) return <SignUpStack setLoggedIn={setLoggedIn} />
-  else  return <RootStack />;
+  const dispatch = useDispatch()
+  dispatch(getCredentials)
+
+  const loggedIn = useSelector<RootState>(state => state.global.isLoggedIn)
+
+  if (!loggedIn) return <SignUpStack />;
+
+  else return <RootStack />;
 };
 
-export default App;
+const WrappedApp = () => {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+};
+
+export default WrappedApp;
