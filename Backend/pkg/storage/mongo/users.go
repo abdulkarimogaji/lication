@@ -21,21 +21,28 @@ func (m *Storage) CreateUser(user *listing.User) (listing.User, error) {
 			Options: options.Index().SetUnique(true),
 		},
 	)
-	r, err := m.users.InsertOne(ctx, user)
-	if err != nil {
-		return listing.User{}, err
-	}
 	var newUser listing.User
-	err = m.users.FindOne(ctx, bson.M{"_id": r.InsertedID.(primitive.ObjectID)}).Decode(&newUser)
+
+	r, err := m.users.InsertOne(ctx, user)
 
 	if mongo.IsDuplicateKeyError(err) {
 		err = m.users.FindOne(ctx, bson.M{"phone": user.Phone}).Decode(&newUser)
 		if err != nil {
 			return listing.User{}, err
 		}
+		return newUser, nil
 	}
 
-	return newUser, err
+	if err != nil {
+		return listing.User{}, err
+	}
+
+	err = m.users.FindOne(ctx, bson.M{"_id": r.InsertedID.(primitive.ObjectID)}).Decode(&newUser)
+	if err != nil {
+		return listing.User{}, err
+	}
+
+	return newUser, nil
 }
 
 func (m *Storage) UpdateUser(user *listing.User) (listing.User, error) { return listing.User{}, nil }

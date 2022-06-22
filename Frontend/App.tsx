@@ -7,22 +7,22 @@
  *
  * @format
  */
-import React from "react";
-import { Provider, useSelector } from "react-redux";
 import RootStack from "./routes/ContainerStack";
 import SignUpStack from "./routes/SignUpStack";
 import { RootState, store } from "./store/store";
-import { useDispatch } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { getCredentials } from "./store/globalSlice";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import React, { useEffect } from "react";
+
 
 const App = () => {
-  const dispatch = useDispatch()
-  dispatch(getCredentials)
+  type AppDispatch = ThunkDispatch<RootState, any, AnyAction>;
+  const dispatch: AppDispatch = useDispatch();
+  var flag = ""
+  dispatch(getCredentials()).unwrap().then(r => flag = r || "");
 
-  const loggedIn = useSelector<RootState>(state => state.global.isLoggedIn)
-
-  if (!loggedIn) return <SignUpStack />;
-
+  if (flag === "") return <SignUpStack />;
   else return <RootStack />;
 };
 

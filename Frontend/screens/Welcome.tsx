@@ -1,11 +1,11 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import React from "react";
 import { Button, Image } from "react-native";
-import { View, Text, StyleSheet, TextInput, Keyboard } from "react-native";
+import { View, Text, StyleSheet, Keyboard } from "react-native";
 import { TouchableWithoutFeedback as TWF } from "react-native-gesture-handler";
 
 const WelcomeScreen = ({ navigation }: StackScreenProps<any>) => {
-  const goToSignUp = () => {navigation.navigate('signup')};
+  const goToSignUp = () => {navigation.navigate('signup-phone-number')};
   return (
     <View style={styles.container}>
       <TWF onPress={() => Keyboard.dismiss()}>

@@ -3,6 +3,7 @@ package rest
 import (
 	"errors"
 	"io"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -52,6 +53,7 @@ func badRequestResponse(c *gin.Context, err error) {
 }
 
 func errorResponse(c *gin.Context, err error) {
+	log.Println(err)
 	c.JSON(http.StatusInternalServerError, gin.H{
 		"data":  nil,
 		"error": err,

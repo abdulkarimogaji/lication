@@ -4,6 +4,7 @@ import React from "react";
 import WelcomeScreen from "../screens/Welcome";
 import SignUp from "../screens/SignUp";
 import { View } from "react-native";
+import ProfileInfo from "../screens/ProfileInfo";
 
 
 
@@ -21,7 +22,8 @@ const SignUpStack = () => {
       >
       
         <Stack.Screen name="welcome" component={WelcomeScreen}/>
-        <Stack.Screen name="signup" component={SignUp}/>
+        <Stack.Screen name="signup-phone-number" component={SignUp}/>
+        <Stack.Screen name="signup-profile-info" component={ProfileInfo} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,40 +1,42 @@
-import { StackScreenProps } from "@react-navigation/stack";
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Button, Keyboard } from "react-native";
 import {
-  TextInput,
+  Button,
+  Keyboard,
+  Text,
+  View,
   TouchableWithoutFeedback as TWF,
-} from "react-native-gesture-handler";
+  StyleSheet,
+  Image,
+} from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 
-
-const SignUp = ({ navigation }: StackScreenProps<any>) => {
-  const [num, setNum] = useState<string>("");
+const ProfileInfo = () => {
+  const [name, setName] = useState<string>("");
   const handlePress = () => {
-    navigation.navigate("signup-profile-info")
+    // login here
   };
+
   return (
     <View style={styles.container}>
       <TWF onPress={Keyboard.dismiss}>
-        <Text style={styles.header}>Enter your phone number</Text>
+        <Text style={styles.header}>Profile info</Text>
         <Text style={styles.textCenter}>
-          Lication will need your phone number to get you started
+          Please provide your name and an optional profile photo
         </Text>
-        <View style={styles.center}>
-          <Text style={styles.location}>Nigeria</Text>
-        </View>
-        <View style={styles.center}>
-          <Text style={[styles.phoneNumber, styles.code]}>+234</Text>
-          <TextInput
-            placeholder="phone number"
-            value={num}
-            onChangeText={(curr) => setNum(curr)}
-            style={styles.phoneNumber}
-            keyboardType="number-pad"
+        <View style={styles.imageContainer}>
+          <Image
+            source={require("../assets/images/profile.jpg")}
+            style={styles.image}
           />
         </View>
-        <Text style={[styles.textCenter, { marginVertical: 20 }]}>
-          No charges may apply
-        </Text>
+        <View style={styles.center}>
+          <TextInput
+            placeholder="Type your name here"
+            value={name}
+            onChangeText={(curr) => setName(curr)}
+            style={styles.textInput}
+          />
+        </View>
         <View style={[styles.center, { marginTop: 150 }]}>
           <View style={styles.button}>
             <Button title="NEXT" color="#128C7E" onPress={handlePress} />
@@ -60,14 +62,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  location: {
-    marginVertical: 20,
-    paddingHorizontal: 90,
-    textAlign: "center",
-    borderBottomWidth: 1,
-    borderColor: "#aaa",
-    fontSize: 14,
-  },
   header: {
     fontSize: 19,
     padding: 10,
@@ -77,7 +71,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 
-  phoneNumber: {
+  textInput: {
     padding: 0,
     borderBottomWidth: 2,
     fontSize: 15,
@@ -85,14 +79,20 @@ const styles = StyleSheet.create({
     paddingEnd: 50,
     borderColor: "#128C7E",
   },
-  code: {
-    paddingEnd: 0,
-    padding: 4,
-    paddingHorizontal: 10,
-  },
   button: {
     width: 100,
   },
+  imageContainer: {
+    marginTop: 100,
+    display: "flex",
+    alignItems: "center",
+    marginBottom: 30,
+  },
+  image: {
+    borderRadius: 999,
+    width: 100,
+    height: 100,
+  },
 });
 
-export default SignUp;
+export default ProfileInfo;

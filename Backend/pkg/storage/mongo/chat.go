@@ -22,6 +22,15 @@ func (m *Storage) CreateChat(newChat *listing.Chat, first_message_text string) (
 		},
 	)
 	r, err := m.chats.InsertOne(ctx, newChat)
+	// get chat back
+	var result listing.Chat
+	if mongo.IsDuplicateKeyError(err) {
+		err = m.chats.FindOne(ctx, bson.M{"first_party": newChat.FirstParty, "second_party": newChat.SecondParty}).Decode(&result)
+		if err != nil {
+			return listing.Chat{}, err
+		}
+		return result, nil
+	}
 	if err != nil {
 		return listing.Chat{}, err
 	}
@@ -38,9 +47,6 @@ func (m *Storage) CreateChat(newChat *listing.Chat, first_message_text string) (
 	if err != nil {
 		return listing.Chat{}, err
 	}
-
-	// get chat back
-	var result listing.Chat
 
 	err = m.chats.FindOne(ctx, bson.M{"_id": r.InsertedID}).Decode(&result)
 	if err != nil {
@@ -64,7 +70,7 @@ func (m *Storage) CreateMessage(newMessage *listing.Message) (listing.Message, e
 
 func (m *Storage) GetAllUserChats(user primitive.ObjectID) ([]listing.Chat, error) {
 	ctx := context.Background()
-	matchStage := bson.D{{Key: "$match", Value: bson.D{{Key: "$expr", Value: bson.D{{Key: "$or", Value: bson.A{bson.M{"$first_party": user}, bson.M{"$second_party": user}}}}}}}}
+	matchStage := bson.D{{Key: "$match", Value: bson.D{{Key: "$expr", Value: bson.D{{Key: "$or", Value: bson.A{bson.M{"first_party": user}, bson.M{"second_party": user}}}}}}}}
 	lookupStage := bson.D{{Key: "$lookup", Value: bson.D{{Key: "from", Value: "messages"}, {Key: "localField", Value: "_id"}, {Key: "foreignField", Value: "chat"}, {Key: "as", Value: "last_message"}}}}
 	sortStage := bson.D{{Key: "$sort", Value: bson.D{{Key: "created_at", Value: -1}}}}
 	limitStage := bson.D{{Key: "$limit", Value: 1}}

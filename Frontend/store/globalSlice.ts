@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface GlobalState {
   credentials: Credentials,
@@ -27,16 +27,28 @@ export const globalSlice = createSlice({
       state.credentials = action.payload
       state.isLoggedIn = true
     },
+  },
 
-    getCredentials: (state: GlobalState, action: PayloadAction<Credentials>) => {
-      var cred = ""
-      AsyncStorage.getItem("@lication_credentials").then(c => cred = c || "")
-      state.credentials = JSON.parse(cred)
-    }
+  extraReducers(builder) {
+    builder.addCase(getCredentials.fulfilled, (state, action) => {
+      if (action.payload) {
+        console.log("got here")
+        state.credentials = JSON.parse(action.payload)
+      }
+    }),
+    builder.addCase(getCredentials.rejected, (state, action) => {
+      console.log("git gere " ,action.error)
+    })
   },
 })
 
+export const getCredentials = createAsyncThunk("local/get_credentials", async() => {
+  console.log("got here to get Credentiasl")
+  return await AsyncStorage.getItem("@lication_credentials")
+})
+
+
 // Action creators are generated for each case reducer function
-export const { login, getCredentials } = globalSlice.actions
+export const { login } = globalSlice.actions
 
 export default globalSlice.reducer
