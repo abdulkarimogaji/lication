@@ -9,7 +9,6 @@ require (
 	github.com/steinfletcher/apitest v1.5.12
 	github.com/stretchr/testify v1.7.1
 	go.mongodb.org/mongo-driver v1.9.1
-	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 )
 
 require (

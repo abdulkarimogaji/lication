@@ -1,9 +1,12 @@
 package creating
 
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
 type Message struct {
-	Id   string `json:"id"`
-	Text string `json:"text"`
-	// chat id
-	Chat   string `json:"chat"`
-	Sender string `sender:"sender"`
+	Text        string             `json:"text" binding:"required"`
+	Sender      primitive.ObjectID `json:"sender" binding:"required"`
+	Chat        primitive.ObjectID `json:"chat" binding:"required"`
+	MessageType string             `json:"message_type" binding:"required"`
 }

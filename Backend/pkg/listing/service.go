@@ -1,14 +1,15 @@
 package listing
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
 type Service interface {
 	GetUser(userId string) (User, error)
-	// SendMessage(Message) Message
-	// CreateGroup(Group) Group
+	GetAllUserChats(user primitive.ObjectID) ([]Chat, error)
 }
 
 type Repository interface {
 	GetUser(userId string) (User, error)
-	GetUsersByPhoneNumbers(nums ...string) ([]User, error)
+	GetAllUserChats(user primitive.ObjectID) ([]Chat, error)
 	// CreateMessage(Message) Message
 	// CreateGroup(Group) Group
 }
@@ -24,4 +25,8 @@ func NewService(r Repository) Service {
 func (s *service) GetUser(userId string) (User, error) {
 	user, err := s.r.GetUser(userId)
 	return user, err
+}
+
+func (s *service) GetAllUserChats(user primitive.ObjectID) ([]Chat, error) {
+	return s.r.GetAllUserChats(user)
 }

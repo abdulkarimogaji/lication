@@ -23,8 +23,12 @@ func NewStorage() (*Storage, error) {
 	}
 	DB := client.Database("lication")
 	users := DB.Collection("users")
+	chats := DB.Collection("chats")
+	messages := DB.Collection("messages")
 
 	return &Storage{
-		users: users,
+		users:    users,
+		chats:    chats,
+		messages: messages,
 	}, nil
 }

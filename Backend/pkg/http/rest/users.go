@@ -9,7 +9,7 @@ import (
 	"github.com/lication/pkg/creating"
 )
 
-func createUser(cr creating.Service) gin.HandlerFunc {
+func loginUser(cr creating.Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// some request body validation here
 		var req creating.User

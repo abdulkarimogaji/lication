@@ -9,6 +9,8 @@ import (
 type Service interface {
 	CreateUser(*User) (listing.User, error)
 	UpdateUser(*User) (listing.User, error)
+	CreateChat(*Chat) (listing.Chat, error)
+	CreateMessage(*Message) (listing.Message, error)
 	// SendMessage(Message) Message
 	// CreateGroup(Group) Group
 }
@@ -16,7 +18,8 @@ type Service interface {
 type Repository interface {
 	CreateUser(*listing.User) (listing.User, error)
 	UpdateUser(*listing.User) (listing.User, error)
-	// CreateMessage(Message) Message
+	CreateChat(newChat *listing.Chat, first_message_text string) (listing.Chat, error)
+	CreateMessage(msg *listing.Message) (listing.Message, error)
 	// CreateGroup(Group) Group
 }
 
@@ -52,4 +55,29 @@ func (s *service) UpdateUser(user *User) (listing.User, error) {
 		Username: user.Username,
 	}
 	return s.r.UpdateUser(update)
+}
+
+func (s *service) CreateChat(chat *Chat) (listing.Chat, error) {
+	newChat := &listing.Chat{
+		FirstParty:  chat.FirstParty,
+		SecondParty: chat.SecondParty,
+		ChatType:    chat.ChatType,
+		ChatName:    chat.ChatName,
+		ChatImage:   chat.ChatImage,
+		CreatedAt:   time.Now().UTC(),
+		UpdatedAt:   time.Now().UTC(),
+	}
+
+	return s.r.CreateChat(newChat, chat.FirstMessageText)
+}
+
+func (s *service) CreateMessage(msg *Message) (listing.Message, error) {
+	newMsg := &listing.Message{
+		Text:        msg.Text,
+		MessageType: msg.MessageType,
+		Sender:      msg.Sender,
+		Chat:        msg.Chat,
+		CreatedAt:   time.Now().UTC(),
+	}
+	return s.r.CreateMessage(newMsg)
 }

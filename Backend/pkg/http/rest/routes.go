@@ -10,8 +10,11 @@ import (
 func ConfigureRoutes(h health.Service, c creating.Service, l listing.Service) *gin.Engine {
 	r := gin.Default()
 	r.GET("/health", healthCheck(h))
-	r.POST("/users", createUser(c))
+	r.POST("/login", loginUser(c))
 	r.PUT("/users", updateUser(c))
+	r.POST("/chats", createChat(c))
+	r.POST("/messages", createMessage(c))
+	r.GET("/chats/:userId", getAllUserChats(l))
 	// r.GET("/users/:id", getUserById(ls))
 	// r.POST("/messages", createMessage(c))
 	// r.POST("/chats", createChat(c))
