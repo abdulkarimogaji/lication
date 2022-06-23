@@ -13,7 +13,7 @@ import { RootState, store } from "./store/store";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { getCredentials } from "./store/globalSlice";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
-import React, { useEffect } from "react";
+import React from "react";
 
 
 const App = () => {

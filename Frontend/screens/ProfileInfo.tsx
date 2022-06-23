@@ -1,3 +1,6 @@
+import { NavigationHelpersContext } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import {
   Button,
@@ -9,37 +12,56 @@ import {
   Image,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
+import { useDispatch } from "react-redux";
 
-const ProfileInfo = () => {
+import { useLoginMutation } from "../store/api/apiSlice";
+import { loginAction, setCredentials } from "../store/globalSlice";
+import { RootState } from "../store/store";
+
+const ProfileInfo = ({ navigation, route }: StackScreenProps<any>) => {
   const [name, setName] = useState<string>("");
-  const handlePress = () => {
-    // login here
+  const [login, { isSuccess, data: loginResponse }] = useLoginMutation()
+  type AppDispatch = ThunkDispatch<RootState, any, AnyAction>;
+  const dispatch:AppDispatch = useDispatch()
+  const handlePress = async() => {
+    await login({
+      name,
+      phone: route.params?.phone
+    })
+    if (isSuccess) {
+      console.log("success: ", loginResponse);
+      await dispatch(setCredentials(JSON.stringify({_id: loginResponse.data._id, phone: loginResponse.data.phone})))
+      dispatch(loginAction())
+      navigation.navigate("ChatTabs")
+    }
   };
 
   return (
     <View style={styles.container}>
       <TWF onPress={Keyboard.dismiss}>
-        <Text style={styles.header}>Profile info</Text>
-        <Text style={styles.textCenter}>
-          Please provide your name and an optional profile photo
-        </Text>
-        <View style={styles.imageContainer}>
-          <Image
-            source={require("../assets/images/profile.jpg")}
-            style={styles.image}
-          />
-        </View>
-        <View style={styles.center}>
-          <TextInput
-            placeholder="Type your name here"
-            value={name}
-            onChangeText={(curr) => setName(curr)}
-            style={styles.textInput}
-          />
-        </View>
-        <View style={[styles.center, { marginTop: 150 }]}>
-          <View style={styles.button}>
-            <Button title="NEXT" color="#128C7E" onPress={handlePress} />
+        <View>
+          <Text style={styles.header}>Profile info</Text>
+          <Text style={styles.textCenter}>
+            Please provide your name and an optional profile photo
+          </Text>
+          <View style={styles.imageContainer}>
+            <Image
+              source={require("../assets/images/profile.jpg")}
+              style={styles.image}
+            />
+          </View>
+          <View style={styles.center}>
+            <TextInput
+              placeholder="Type your name here"
+              value={name}
+              onChangeText={(curr) => setName(curr)}
+              style={styles.textInput}
+            />
+          </View>
+          <View style={[styles.center, { marginTop: 150 }]}>
+            <View style={styles.button}>
+              <Button title="NEXT" color="#128C7E" onPress={handlePress} />
+            </View>
           </View>
         </View>
       </TWF>
@@ -51,6 +73,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+    position: "relative"
   },
   textCenter: {
     textAlign: "center",
@@ -78,21 +101,28 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     paddingEnd: 50,
     borderColor: "#128C7E",
+    width: "80%"
   },
   button: {
     width: 100,
+    position: "absolute",
+    bottom: 0
   },
   imageContainer: {
-    marginTop: 100,
+    marginTop: 50,
     display: "flex",
     alignItems: "center",
     marginBottom: 30,
   },
   image: {
     borderRadius: 999,
-    width: 100,
-    height: 100,
+    width: 110,
+    height: 110,
   },
+
+  nextButton: {
+    
+  }
 });
 
 export default ProfileInfo;

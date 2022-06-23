@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AnyAction, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface GlobalState {
   credentials: Credentials,
@@ -9,7 +9,7 @@ export interface GlobalState {
 }
 
 type Credentials = {
-  phone: string; phoneId: string
+  phone: string; _id: string
 }
 
 const initialState: GlobalState = {
@@ -23,12 +23,10 @@ export const globalSlice = createSlice({
   name: 'global',
   initialState,
   reducers: {
-    login: (state: GlobalState, action: PayloadAction<Credentials>) => {
-      state.credentials = action.payload
+    loginAction: (state: GlobalState, action: AnyAction) => {
       state.isLoggedIn = true
-    },
+    }
   },
-
   extraReducers(builder) {
     builder.addCase(getCredentials.fulfilled, (state, action) => {
       if (action.payload) {
@@ -47,8 +45,10 @@ export const getCredentials = createAsyncThunk("local/get_credentials", async() 
   return await AsyncStorage.getItem("@lication_credentials")
 })
 
+export const setCredentials = createAsyncThunk("local/set_credentials", async(credentials: string) => {
+  console.log("Setting credentials")
+  return await AsyncStorage.setItem("@lication_credentials", credentials)
+})
 
-// Action creators are generated for each case reducer function
-export const { login } = globalSlice.actions
-
+export const { loginAction } = globalSlice.actions
 export default globalSlice.reducer

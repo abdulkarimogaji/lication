@@ -14,7 +14,7 @@ type Chat struct {
 	ChatType    string    `json:"chat_type" bson:"chat_type"`
 	ChatName    string    `json:"chat_name" bson:"chat_name"`
 	ChatImage   string    `json:"chat_image" bson:"chat_image"`
-	LastMessage Message   `json:"last_message" bson:"last_message"`
+	LastMessage Message   `json:"last_message" bson:"-"`
 	CreatedAt   time.Time `bson:"created_at"`
 	UpdatedAt   time.Time `bson:"updated_at"`
 }

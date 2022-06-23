@@ -14,7 +14,7 @@ func ConfigureRoutes(h health.Service, c creating.Service, l listing.Service) *g
 	r.PUT("/users", updateUser(c))
 	r.POST("/chats", createChat(c))
 	r.POST("/messages", createMessage(c))
-	r.GET("/chats/:userId", getAllUserChats(l))
+	r.GET("/:userId/chats", getAllUserChats(l))
 	// r.GET("/users/:id", getUserById(ls))
 	// r.POST("/messages", createMessage(c))
 	// r.POST("/chats", createChat(c))

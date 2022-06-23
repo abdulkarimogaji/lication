@@ -14,11 +14,12 @@ import (
 func (m *Storage) CreateChat(newChat *listing.Chat, first_message_text string) (listing.Chat, error) {
 	ctx := context.Background()
 	// make the first and second parties unique
-	m.chats.Indexes().CreateOne(
+	m.chats.Indexes().CreateMany(
 		ctx,
-		mongo.IndexModel{
+		[]mongo.IndexModel{{
 			Keys:    bson.D{{Key: "first_party", Value: 1}, {Key: "second_party", Value: 1}},
 			Options: options.Index().SetUnique(true),
+		},
 		},
 	)
 	r, err := m.chats.InsertOne(ctx, newChat)

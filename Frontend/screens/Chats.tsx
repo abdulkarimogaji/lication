@@ -4,6 +4,7 @@ import { globalStyle } from '../styles/global';
 import { StackScreenProps } from "@react-navigation/stack";
 import SingleChat from '../components/SingleChat';
 import { RootStackParamList } from '../routes/ContainerStack';
+import { useGetChatsQuery } from '../store/api/apiSlice';
 
 type Props = StackScreenProps<RootStackParamList, any>;
 
@@ -134,6 +135,7 @@ export default function Chats({navigation, route}: Props) {
     },
   ]
   const [chats, setChats] = useState<ChatType[] | null>(demoChats)
+  const { data, isLoading, isSuccess, isError, isFetching } = useGetChatsQuery("some user Id")
   return (
     <View style={globalStyle.container}>
       <FlatList
