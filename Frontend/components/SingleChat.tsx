@@ -7,8 +7,8 @@ import {
   TouchableOpacity as T,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { ChatType } from '../screens/Chats'
 import { RootStackParamList } from "../routes/ContainerStack";
+import { ChatType } from "../store/api/apiSlice";
 
 
 type Props = {
@@ -19,20 +19,20 @@ type Props = {
 
 const SingleChat = ({ chatData, navigation }: Props) => {
   const goToChatDetails = () => {
-    navigation.navigate("ChatDetails", { chatName: chatData.chatName});
+    navigation.navigate("ChatDetails", { chat: chatData});
   };
 
   return (
     <View style={styles.chat}>
-      <Image style={styles.chatImage} source={chatData.chatImage} />
+      <Image style={styles.chatImage} source={require("../assets/images/profile.jpg")} />
       <T onPress={goToChatDetails} style={styles.content}>
         <View>
-          <Text style={styles.chatName}>{chatData.chatName}</Text>
+          <Text style={styles.chatName}>{chatData.chat_name}</Text>
           <Text>
-            {chatData.lastMessage.sender}: {chatData.lastMessage.text}
+            {chatData.messages[0].sender}: {chatData.messages[0].text}
           </Text>
         </View>
-        <Text style={styles.sendTime}>{chatData.lastMessage.sendTime}</Text>
+        <Text style={styles.sendTime}>{chatData.messages[0].created_at}</Text>
       </T>
     </View>
   );

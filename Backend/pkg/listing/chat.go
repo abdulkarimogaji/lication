@@ -14,6 +14,6 @@ type Chat struct {
 	ChatName    string             `json:"chat_name" bson:"chat_name"`
 	ChatImage   string             `json:"chat_image" bson:"chat_image"`
 	Messages    []Message          `json:"messages" bson:"messages,omitempty"`
-	CreatedAt   time.Time          `bson:"created_at"`
-	UpdatedAt   time.Time          `bson:"updated_at"`
+	CreatedAt   time.Time          `bson:"created_at" json:"created_at"`
+	UpdatedAt   time.Time          `bson:"updated_at" json:"updated_at"`
 }

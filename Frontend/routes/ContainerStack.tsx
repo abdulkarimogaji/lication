@@ -4,10 +4,11 @@ import React from "react";
 import HomeTabs from "./HomeTabs";
 import MainHeader from "../components/MainHeader";
 import ChatDetails from "../screens/ChatDetails";
+import { ChatType, Message } from "../store/api/apiSlice";
 
 export type RootStackParamList = {
   ChatTabs: {};
-  ChatDetails: { chatName: string};
+  ChatDetails: { chat: ChatType};
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

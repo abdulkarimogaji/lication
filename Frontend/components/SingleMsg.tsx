@@ -1,22 +1,25 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
-import { Message } from "../screens/ChatDetails";
+import { useSelector } from "react-redux";
+import { Message } from "../store/api/apiSlice";
+import { RootState } from "../store/store";
 
 const SingleMsg = ({ msgData }: { msgData: Message }) => {
+  const phone = useSelector<RootState>(state => state.global.phone)
   return (
     <>
-      {msgData.isFromMe ? (
+      {msgData.sender == phone as string ? (
         <View style={styles.rightMsg}>
           <View style={styles.content}>
           <Text style={styles.text}>{msgData.text} </Text>
-          <Text style={styles.time}>{msgData.time}</Text>
+          <Text style={styles.time}>{msgData.created_at}</Text>
           </View>
         </View>
       ) : (
         <View style={styles.leftMsg}>
           <View style={styles.content}>
           <Text style={styles.text}>{msgData.text}</Text>
-          <Text style={styles.time}>{msgData.time}</Text>
+          <Text style={styles.time}>{msgData.created_at}</Text>
           </View>
         </View>
       )}

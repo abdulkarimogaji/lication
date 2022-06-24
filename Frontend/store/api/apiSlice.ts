@@ -10,7 +10,7 @@ export const apiSlice = createApi({
   // The "endpoints" represent operations and requests for this server
   endpoints: builder => ({
     // The `getPosts` endpoint is a "query" operation that returns data
-    getChats: builder.query({
+    getChats: builder.query<MyResponse<ChatType[]>,string>({
       // The URL for the request is '/fakeApi/posts'
       
       query: userId => `/${userId}/chats`
@@ -20,7 +20,15 @@ export const apiSlice = createApi({
       query: chatId => `someUserId/chats/${chatId}`
     }),
 
-    login: builder.mutation({
+    createMessage: builder.mutation({
+      query: body => ({
+        url: '/messages',
+        method: 'POST',
+        body
+      })
+    }),
+
+    login: builder.mutation<MyResponse<User>, any>({
       query: user => ({
         url: '/login',
         method: "POST",
@@ -31,4 +39,40 @@ export const apiSlice = createApi({
 })
 
 // Export the auto-generated hook for the `getPosts` query endpoint
-export const { useGetChatsQuery, useGetSingleChatQuery, useLoginMutation } = apiSlice
+export const { useGetChatsQuery, useGetSingleChatQuery, useLoginMutation, useCreateMessageMutation } = apiSlice
+
+
+type MyResponse<T> = {
+  data: T;
+  error: string;
+}
+
+type User = {
+  id: string;
+  display_name: string;
+  phone: string;
+  email: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export type Message = {
+  id: string;
+  text: string;
+  sender: string;
+  message_type: string;
+  created_at: string;
+  chat: string;
+}
+
+export type ChatType = {
+  id: string;
+  first_party: string;
+  second_party: string;
+  chat_type: string;
+  chat_name: string;
+  chat_image: string;
+  messages: Message[];
+  created_at: Date;
+  updated_at: Date;
+}

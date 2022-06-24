@@ -1,6 +1,5 @@
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { StackScreenProps } from "@react-navigation/stack";
-import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import {
   Button,
@@ -12,31 +11,27 @@ import {
   Image,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import { useDispatch } from "react-redux";
 
 import { useLoginMutation } from "../store/api/apiSlice";
-import { loginAction, setCredentials } from "../store/globalSlice";
-import { RootState } from "../store/store";
 
 const ProfileInfo = ({ navigation, route }: StackScreenProps<any>) => {
   const [name, setName] = useState<string>("");
-  const [login, { isSuccess, data: loginResponse, isError, error }] = useLoginMutation()
-  const dispatch = useDispatch()
+  const [login, { isSuccess, data: loginResponse }] = useLoginMutation()
   const { setItem } = useAsyncStorage("@lication_credentials")
   const handlePress = async() => {
     await login({
       display_name: name,
       phone: "+234" + route.params?.phone
     })
-    if (isError) console.log("error: ", error)
-    if (isSuccess) {
-      const credentials = {_id: loginResponse.data._id, phone: loginResponse.data.phone}
-      await setItem(JSON.stringify(credentials))
-      dispatch(loginAction(credentials))
-      navigation.navigate('main-app', {screen: 'ChatTabs'})
-    }
-
+    
   };
+  if (isSuccess) {
+      const credentials = {_id: loginResponse?.data.id, phone: loginResponse?.data.phone}
+      setItem(JSON.stringify(credentials))
+      navigation.navigate('main-app', {screen: 'ChatTabs'})
+      // display loading here
+      return <View></View>
+    }
 
   return (
     <View style={styles.container}>

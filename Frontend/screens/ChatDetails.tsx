@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -10,229 +10,37 @@ import {
   ScrollView,
   TouchableOpacity as TO,
   TouchableWithoutFeedback as TWF,
+  Button,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { RootStackParamList } from "../routes/ContainerStack";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { globalStyle } from "../styles/global";
+
 
 import SingleMsg from "../components/SingleMsg";
+import { useCreateMessageMutation } from "../store/api/apiSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
-export type Message = {
-  type: string;
-  text: string;
-  time: string;
-  isFromMe: boolean;
-  isSeen: boolean;
-  isDelivered: boolean;
-};
-
-const demoMsgs: Message[] = [
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia`,
-    time: "20:14",
-    isFromMe: true,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia lots of text I am so tired of this wretched story am sick of it`,
-    time: "20:14",
-    isFromMe: false,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia`,
-    time: "20:14",
-    isFromMe: false,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia Lets see how well you will do if you carry such a heavy message like this`,
-    time: "20:14",
-    isFromMe: true,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia`,
-    time: "20:14",
-    isFromMe: true,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia lots of text I am so tired of this wretched story am sick of it`,
-    time: "20:14",
-    isFromMe: false,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia`,
-    time: "20:14",
-    isFromMe: false,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia Lets see how well you will do if you carry such a heavy message like this`,
-    time: "20:14",
-    isFromMe: true,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia`,
-    time: "20:14",
-    isFromMe: true,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia lots of text I am so tired of this wretched story am sick of it`,
-    time: "20:14",
-    isFromMe: false,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia`,
-    time: "20:14",
-    isFromMe: false,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia Lets see how well you will do if you carry such a heavy message like this`,
-    time: "20:14",
-    isFromMe: true,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia`,
-    time: "20:14",
-    isFromMe: true,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia lots of text I am so tired of this wretched story am sick of it`,
-    time: "20:14",
-    isFromMe: false,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia`,
-    time: "20:14",
-    isFromMe: false,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia Lets see how well you will do if you carry such a heavy message like this`,
-    time: "20:14",
-    isFromMe: true,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia`,
-    time: "20:14",
-    isFromMe: true,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia lots of text I am so tired of this wretched story am sick of it`,
-    time: "20:14",
-    isFromMe: false,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia`,
-    time: "20:14",
-    isFromMe: false,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia Lets see how well you will do if you carry such a heavy message like this`,
-    time: "20:14",
-    isFromMe: true,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia`,
-    time: "20:14",
-    isFromMe: true,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia lots of text I am so tired of this wretched story am sick of it`,
-    time: "20:14",
-    isFromMe: false,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia`,
-    time: "20:14",
-    isFromMe: false,
-    isSeen: true,
-    isDelivered: true,
-  },
-  {
-    type: "TEXT",
-    text: `Who's Up for Mini militia Lets see how well you will do if you carry such a heavy message like this`,
-    time: "20:14",
-    isFromMe: true,
-    isSeen: true,
-    isDelivered: true,
-  },
-];
 
 type Props = NativeStackScreenProps<RootStackParamList, "ChatDetails">;
 export default function ChatDetails({ navigation, route }: Props) {
-  const name = route.params.chatName;
+  const [newMessage, setNewMessage] = useState<string>("")
+  const chat = route.params.chat
+  const phone = useSelector<RootState>(state => state.global.phone)
+
+  const [sendMessage, { isSuccess, data }] = useCreateMessageMutation()
+  const handleSendMessage = async () => {
+    setNewMessage("")
+    await sendMessage({
+      text: newMessage,
+      message_type: "TEXT",
+      chat: chat.id,
+      sender: phone as string
+    })
+  }
   const goBack = () => {
     navigation.goBack();
-  };
-  const demoChattee = {
-    name: "Dangana Mufid",
-    type: "SINGLE",
-    profilePic: require("../assets/images/myPic.jpg"),
-    profileStatus: "online",
   };
   return (
     <>
@@ -247,13 +55,13 @@ export default function ChatDetails({ navigation, route }: Props) {
             />
           </TO>
           <TO>
-            <Image source={demoChattee.profilePic} style={styles.profilePic} />
+            <Image source={require("../assets/images/profile.jpg")} style={styles.profilePic} />
           </TO>
           <TO style={styles.headerBody}>
             <Text style={styles.headerText}>
-              {name.length < 15 ? name : name.slice(0, 15) + "..."}
+              {chat.chat_name.length < 15 ? chat.chat_name : chat.chat_name.slice(0, 15) + "..."}
             </Text>
-            <Text style={{ color: "#eee" }}>{demoChattee.profileStatus}</Text>
+            <Text style={{ color: "#eee" }}>online</Text>
           </TO>
           <TO>
             <MaterialIcons
@@ -282,7 +90,7 @@ export default function ChatDetails({ navigation, route }: Props) {
           style={styles.container}
         >
           <ScrollView>
-            {demoMsgs.map((msg, i) => (
+            {chat.messages.map((msg, i) => (
               <SingleMsg msgData={msg} key={i} />
             ))}
           </ScrollView>
@@ -298,6 +106,8 @@ export default function ChatDetails({ navigation, route }: Props) {
                 <TextInput
                   placeholder="Message"
                   style={{ width: 170, fontSize: 18 }}
+                  value={newMessage}
+                  onChangeText={text => setNewMessage(text)}
                 />
               </View>
               <View style={{ display: "flex", flexDirection: "row" }}>
@@ -310,11 +120,19 @@ export default function ChatDetails({ navigation, route }: Props) {
                 <MaterialIcons color="#bbb" size={25} name="photo-camera" />
               </View>
             </View>
-            <MaterialIcons
+            <View style={styles.record}>
+
+              <Button
+                title="send"
+                color="transparent"
+                onPress={handleSendMessage}
+              />
+            </View>
+            {/* <MaterialIcons
               style={styles.record}
               size={25}
               name="keyboard-voice"
-            />
+            /> */}
           </View>
         </ImageBackground>
       </TWF>
