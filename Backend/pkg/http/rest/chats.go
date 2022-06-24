@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/lication/pkg/creating"
 	"github.com/lication/pkg/listing"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func createChat(cr creating.Service) gin.HandlerFunc {
@@ -57,19 +56,9 @@ func createMessage(cr creating.Service) gin.HandlerFunc {
 
 func getAllUserChats(l listing.Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		userId := c.Param("userId")
+		user_phone := c.Param("user_phone")
 
-		user, err := primitive.ObjectIDFromHex(userId)
-
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"data":  nil,
-				"error": "invalid user id",
-			})
-			return
-		}
-
-		result, err := l.GetAllUserChats(user)
+		result, err := l.GetAllUserChats(user_phone)
 
 		if err != nil {
 			errorResponse(c, err)

@@ -1,12 +1,8 @@
 package creating
 
-import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
-)
-
 type Chat struct {
-	FirstParty  primitive.ObjectID `json:"first_party" binding:"required"`
-	SecondParty primitive.ObjectID `json:"second_party" binding:"required"`
+	FirstParty  string `json:"first_party" binding:"required,e164"`
+	SecondParty string `json:"second_party" binding:"required,e164"`
 
 	ChatType         string `json:"chat_type" binding:"required"`
 	ChatName         string `json:"chat_name"`

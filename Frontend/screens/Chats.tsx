@@ -5,6 +5,8 @@ import { StackScreenProps } from "@react-navigation/stack";
 import SingleChat from '../components/SingleChat';
 import { RootStackParamList } from '../routes/ContainerStack';
 import { useGetChatsQuery } from '../store/api/apiSlice';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 type Props = StackScreenProps<RootStackParamList, any>;
 
@@ -135,7 +137,8 @@ export default function Chats({navigation, route}: Props) {
     },
   ]
   const [chats, setChats] = useState<ChatType[] | null>(demoChats)
-  const { data, isLoading, isSuccess, isError, isFetching } = useGetChatsQuery("some user Id")
+  const id = useSelector<RootState>(state => state.global.id)
+  const { data, isLoading, isSuccess, isError, isFetching } = useGetChatsQuery(id)
   return (
     <View style={globalStyle.container}>
       <FlatList

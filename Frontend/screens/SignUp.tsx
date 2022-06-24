@@ -1,4 +1,4 @@
-import { StackScreenProps } from "@react-navigation/stack";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Button, Keyboard } from "react-native";
 import {
@@ -7,10 +7,10 @@ import {
 } from "react-native-gesture-handler";
 
 
-const SignUp = ({ navigation }: StackScreenProps<any>) => {
+const SignUp = ({ navigation }: NativeStackScreenProps<any, any, any>) => {
   const [num, setNum] = useState<string>("");
   const handlePress = () => {
-    navigation.navigate("signup-profile-info")
+    navigation.navigate("signup-profile-info", { phone: num })
   };
   return (
     <View style={styles.container}>

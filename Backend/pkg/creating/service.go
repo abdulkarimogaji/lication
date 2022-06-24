@@ -1,6 +1,8 @@
 package creating
 
 import (
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/lication/pkg/listing"
@@ -18,7 +20,7 @@ type Service interface {
 type Repository interface {
 	CreateUser(*listing.User) (listing.User, error)
 	UpdateUser(*listing.User) (listing.User, error)
-	CreateChat(newChat *listing.Chat, first_message_text string) (listing.Chat, error)
+	CreateChat(newChat *listing.Chat, first_message_text, first_message_sender string) (listing.Chat, error)
 	CreateMessage(msg *listing.Message) (listing.Message, error)
 	// CreateGroup(Group) Group
 }
@@ -66,7 +68,15 @@ func (s *service) CreateChat(chat *Chat) (listing.Chat, error) {
 		UpdatedAt:   time.Now().UTC(),
 	}
 
-	return s.r.CreateChat(newChat, chat.FirstMessageText)
+	// ensure that the lower phone number is the first party
+	first, _ := strconv.Atoi(strings.TrimLeft(chat.FirstParty, "+"))
+	second, _ := strconv.Atoi(strings.TrimLeft(chat.SecondParty, "+"))
+	if first > second {
+		newChat.FirstParty = chat.SecondParty
+		newChat.SecondParty = chat.FirstParty
+	}
+
+	return s.r.CreateChat(newChat, chat.FirstMessageText, chat.FirstParty)
 }
 
 func (s *service) CreateMessage(msg *Message) (listing.Message, error) {

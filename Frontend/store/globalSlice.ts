@@ -6,6 +6,7 @@ export interface GlobalState {
   phone: string,
   contacts: { name: string; phone: string}[],
   isLoggedIn: boolean
+  id: string;
 }
 
 type Credentials = {
@@ -15,6 +16,7 @@ type Credentials = {
 const initialState: GlobalState = {
   credentials: {} as any,
   phone: "",
+  id: "",
   contacts: [],
   isLoggedIn: false
 }
@@ -23,8 +25,10 @@ export const globalSlice = createSlice({
   name: 'global',
   initialState,
   reducers: {
-    loginAction: (state: GlobalState, action: AnyAction) => {
+    loginAction: (state: GlobalState, action: PayloadAction<any>) => {
       state.isLoggedIn = true
+      state.id = action.payload.id
+      state.phone = action.payload.phone
     }
   },
   extraReducers(builder) {

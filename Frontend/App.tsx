@@ -7,31 +7,21 @@
  *
  * @format
  */
-import RootStack from "./routes/ContainerStack";
-import SignUpStack from "./routes/SignUpStack";
-import { RootState, store } from "./store/store";
-import { Provider, useDispatch, useSelector } from "react-redux";
-import { getCredentials } from "./store/globalSlice";
-import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import { store } from "./store/store";
+import { Provider } from "react-redux";
+
 import React from "react";
+import ParentStack from "./routes/ParentStack";
 
 
 const App = () => {
-  type AppDispatch = ThunkDispatch<RootState, any, AnyAction>;
-  const dispatch: AppDispatch = useDispatch();
-  var flag = ""
-  dispatch(getCredentials()).unwrap().then(r => flag = r || "");
-
-  if (flag === "") return <SignUpStack />;
-  else return <RootStack />;
-};
-
-const WrappedApp = () => {
   return (
     <Provider store={store}>
-      <App />
-    </Provider>
-  );
+
+      <ParentStack />
+    </Provider>)
 };
 
-export default WrappedApp;
+
+
+export default App;

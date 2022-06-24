@@ -11,26 +11,33 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func (m *Storage) CreateChat(newChat *listing.Chat, first_message_text string) (listing.Chat, error) {
+func (m *Storage) CreateChat(newChat *listing.Chat, first_message_text, first_message_sender string) (listing.Chat, error) {
 	ctx := context.Background()
 	// make the first and second parties unique
-	m.chats.Indexes().CreateMany(
+	m.chats.Indexes().CreateOne(
 		ctx,
-		[]mongo.IndexModel{{
+		mongo.IndexModel{
 			Keys:    bson.D{{Key: "first_party", Value: 1}, {Key: "second_party", Value: 1}},
 			Options: options.Index().SetUnique(true),
-		},
 		},
 	)
 	r, err := m.chats.InsertOne(ctx, newChat)
 	// get chat back
 	var result listing.Chat
 	if mongo.IsDuplicateKeyError(err) {
-		err = m.chats.FindOne(ctx, bson.M{"first_party": newChat.FirstParty, "second_party": newChat.SecondParty}).Decode(&result)
+		matchStage := bson.D{{Key: "$match", Value: bson.D{{Key: "$expr", Value: bson.D{{Key: "$and", Value: bson.A{bson.M{"first_party": newChat.FirstParty}, bson.M{"second_party": newChat.SecondParty}}}}}}}}
+		lookupStage := bson.D{{Key: "$lookup", Value: bson.D{{Key: "from", Value: "messages"}, {Key: "localField", Value: "_id"}, {Key: "foreignField", Value: "chat"}, {Key: "as", Value: "messages"}}}}
+		sortStage := bson.D{{Key: "$sort", Value: bson.D{{Key: "created_at", Value: -1}}}}
+		pipeline := bson.A{matchStage, lookupStage, sortStage}
+		cursor, err := m.chats.Aggregate(ctx, pipeline)
 		if err != nil {
 			return listing.Chat{}, err
 		}
-		return result, nil
+		defer cursor.Close(ctx)
+		for cursor.Next(ctx) {
+			err = cursor.Decode(&result)
+		}
+		return result, err
 	}
 	if err != nil {
 		return listing.Chat{}, err
@@ -39,7 +46,7 @@ func (m *Storage) CreateChat(newChat *listing.Chat, first_message_text string) (
 	// create first message
 	msg, err := m.CreateMessage(&listing.Message{
 		Text:        first_message_text,
-		Sender:      newChat.FirstParty,
+		Sender:      first_message_sender,
 		Chat:        r.InsertedID.(primitive.ObjectID),
 		MessageType: "TEXT",
 		CreatedAt:   time.Now().UTC(),
@@ -54,7 +61,7 @@ func (m *Storage) CreateChat(newChat *listing.Chat, first_message_text string) (
 		return listing.Chat{}, err
 	}
 
-	result.LastMessage = msg
+	result.Messages = []listing.Message{msg}
 	return result, err
 }
 
@@ -69,14 +76,12 @@ func (m *Storage) CreateMessage(newMessage *listing.Message) (listing.Message, e
 	return result, err
 }
 
-func (m *Storage) GetAllUserChats(user primitive.ObjectID) ([]listing.Chat, error) {
+func (m *Storage) GetAllUserChats(user_phone string) ([]listing.Chat, error) {
 	ctx := context.Background()
-	matchStage := bson.D{{Key: "$match", Value: bson.D{{Key: "$expr", Value: bson.D{{Key: "$or", Value: bson.A{bson.M{"first_party": user}, bson.M{"second_party": user}}}}}}}}
-	lookupStage := bson.D{{Key: "$lookup", Value: bson.D{{Key: "from", Value: "messages"}, {Key: "localField", Value: "_id"}, {Key: "foreignField", Value: "chat"}, {Key: "as", Value: "last_message"}}}}
+	matchStage := bson.D{{Key: "$match", Value: bson.D{{Key: "$expr", Value: bson.D{{Key: "$or", Value: bson.A{bson.M{"first_party": user_phone}, bson.M{"second_party": user_phone}}}}}}}}
+	lookupStage := bson.D{{Key: "$lookup", Value: bson.D{{Key: "from", Value: "messages"}, {Key: "localField", Value: "_id"}, {Key: "foreignField", Value: "chat"}, {Key: "as", Value: "messages"}}}}
 	sortStage := bson.D{{Key: "$sort", Value: bson.D{{Key: "created_at", Value: -1}}}}
-	limitStage := bson.D{{Key: "$limit", Value: 1}}
-	unwindStage := bson.D{{Key: "$unwind", Value: bson.D{{Key: "path", Value: "$last_message"}, {Key: "preserveNullAndEmptyArrays", Value: false}}}}
-	pipeline := bson.A{matchStage, lookupStage, sortStage, limitStage, unwindStage}
+	pipeline := bson.A{matchStage, lookupStage, sortStage}
 	cursor, err := m.chats.Aggregate(ctx, pipeline)
 	if err != nil {
 		return []listing.Chat{}, err

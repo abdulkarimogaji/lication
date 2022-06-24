@@ -13,7 +13,6 @@ export type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>();
 const RootStack = () => {
   return (
-    <NavigationContainer>
       <Stack.Navigator
         initialRouteName="ChatTabs"
         screenOptions={{
@@ -25,7 +24,6 @@ const RootStack = () => {
         <Stack.Screen name="ChatTabs" component={HomeTabs} />
         <Stack.Screen name="ChatDetails" component={ChatDetails} />
       </Stack.Navigator>
-    </NavigationContainer>
   );
 };
 

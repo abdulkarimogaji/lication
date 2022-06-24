@@ -1,4 +1,4 @@
-import { NavigationHelpersContext } from "@react-navigation/native";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { StackScreenProps } from "@react-navigation/stack";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import React, { useState } from "react";
@@ -20,20 +20,22 @@ import { RootState } from "../store/store";
 
 const ProfileInfo = ({ navigation, route }: StackScreenProps<any>) => {
   const [name, setName] = useState<string>("");
-  const [login, { isSuccess, data: loginResponse }] = useLoginMutation()
-  type AppDispatch = ThunkDispatch<RootState, any, AnyAction>;
-  const dispatch:AppDispatch = useDispatch()
+  const [login, { isSuccess, data: loginResponse, isError, error }] = useLoginMutation()
+  const dispatch = useDispatch()
+  const { setItem } = useAsyncStorage("@lication_credentials")
   const handlePress = async() => {
     await login({
-      name,
-      phone: route.params?.phone
+      display_name: name,
+      phone: "+234" + route.params?.phone
     })
+    if (isError) console.log("error: ", error)
     if (isSuccess) {
-      console.log("success: ", loginResponse);
-      await dispatch(setCredentials(JSON.stringify({_id: loginResponse.data._id, phone: loginResponse.data.phone})))
-      dispatch(loginAction())
-      navigation.navigate("ChatTabs")
+      const credentials = {_id: loginResponse.data._id, phone: loginResponse.data.phone}
+      await setItem(JSON.stringify(credentials))
+      dispatch(loginAction(credentials))
+      navigation.navigate('main-app', {screen: 'ChatTabs'})
     }
+
   };
 
   return (

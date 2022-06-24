@@ -3,6 +3,7 @@ package rest
 import (
 	"errors"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -25,7 +26,8 @@ func getValidatorErrorMsg(fe validator.FieldError, fieldName string) string {
 }
 
 func badRequestResponse(c *gin.Context, err error) {
-
+	body, _ := ioutil.ReadAll(c.Request.Body)
+	log.Println("bad body: ", string(body))
 	if err == io.EOF {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "request body cannot be empty",
