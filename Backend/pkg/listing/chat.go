@@ -13,7 +13,10 @@ type Chat struct {
 	ChatType    string             `json:"chat_type" bson:"chat_type"`
 	ChatName    string             `json:"chat_name" bson:"chat_name"`
 	ChatImage   string             `json:"chat_image" bson:"chat_image"`
-	Messages    []Message          `json:"messages" bson:"messages,omitempty"`
-	CreatedAt   time.Time          `bson:"created_at" json:"created_at"`
-	UpdatedAt   time.Time          `bson:"updated_at" json:"updated_at"`
+	// for fetching a list of chats
+	LastMessage Message `bson:"last_message,omitempty" json:"last_message,omitempty"`
+	// for fetching a single chat
+	Messages  []Message `bson:"messages,omitempty" json:"messages"`
+	CreatedAt time.Time `bson:"created_at" json:"created_at"`
+	UpdatedAt time.Time `bson:"updated_at" json:"updated_at"`
 }

@@ -47,7 +47,9 @@ func (m *Storage) CreateUser(user *listing.User) (listing.User, error) {
 
 func (m *Storage) UpdateUser(user *listing.User) (listing.User, error) { return listing.User{}, nil }
 
-func (m *Storage) GetUser(userId string) (listing.User, error) { return listing.User{}, nil }
+func (m *Storage) GetUser(userId primitive.ObjectID) (listing.User, error) {
+	return listing.User{}, nil
+}
 
 func (m *Storage) GetUsersByPhoneNumbers(nums ...string) ([]listing.User, error) {
 	return []listing.User{}, nil

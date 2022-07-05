@@ -19,7 +19,7 @@ func LoadConfig() error {
 	Conf.AppEnv = os.Getenv("APP_ENV")
 
 	if Conf.AppEnv == "local" {
-		Conf.DbUri = "mongodb://lication:lication@localhost:8000/lication?authSource=admin"
+		Conf.DbUri = "mongodb://lication:lication@localhost:4000/lication?authSource=admin"
 	}
 	return nil
 }
