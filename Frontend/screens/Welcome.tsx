@@ -1,10 +1,21 @@
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { StackScreenProps } from "@react-navigation/stack";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Image } from "react-native";
 import { View, Text, StyleSheet, Keyboard } from "react-native";
 import { TouchableWithoutFeedback as TWF } from "react-native-gesture-handler";
 
 const WelcomeScreen = ({ navigation }: StackScreenProps<any>) => {
+  const { getItem } = useAsyncStorage("@lication_credentials")
+  const checkCredentials = async() => {
+    const cred = await getItem()
+    if (cred) {
+      navigation.navigate("main-app", { screen: "ChatTabs"})
+    }
+  }
+  useEffect(() => {
+    checkCredentials()
+  }, [])
   const goToSignUp = () => {navigation.navigate('signup-phone-number')};
   return (
     <View style={styles.container}>

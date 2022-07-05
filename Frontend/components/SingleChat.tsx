@@ -9,6 +9,8 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../routes/ContainerStack";
 import { ChatType } from "../store/api/apiSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 
 type Props = {
@@ -22,6 +24,8 @@ const SingleChat = ({ chatData, navigation }: Props) => {
     navigation.navigate("ChatDetails", { chat: chatData});
   };
 
+  const phone = useSelector((state: RootState) => state.global.phone)
+
   return (
     <View style={styles.chat}>
       <Image style={styles.chatImage} source={require("../assets/images/profile.jpg")} />
@@ -29,10 +33,10 @@ const SingleChat = ({ chatData, navigation }: Props) => {
         <View>
           <Text style={styles.chatName}>{chatData.chat_name}</Text>
           <Text>
-            {chatData.messages[0].sender}: {chatData.messages[0].text}
+            <Text style={{fontWeight: 'bold'}}>{chatData.last_message.sender == phone ? "You" : chatData.last_message.sender}</Text>: {chatData.last_message.text}
           </Text>
         </View>
-        <Text style={styles.sendTime}>{chatData.messages[0].created_at}</Text>
+        <Text style={styles.sendTime}>{chatData.last_message.created_at}</Text>
       </T>
     </View>
   );

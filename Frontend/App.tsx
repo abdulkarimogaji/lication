@@ -16,20 +16,9 @@ import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
 
 const App = () => {
-  const { getItem } = useAsyncStorage("@lication_credentials")
-  const [saved, setSaved] = useState(false)
-  const checkCredentials = async() => {
-    const cred = await getItem()
-    if (cred) {
-      setSaved(true)
-    }
-  }
-  useEffect(() => {
-    checkCredentials()
-  }, [])
   return (
     <Provider store={store}>
-      <ParentStack initialRoute={saved ? "main-app": "welcome-stack"} />
+      <ParentStack initialRoute="welcome-stack" />
     </Provider>)
 };
 

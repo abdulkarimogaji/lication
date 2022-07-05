@@ -8,7 +8,7 @@ const SingleMsg = ({ msgData }: { msgData: Message }) => {
   const phone = useSelector<RootState>(state => state.global.phone)
   return (
     <>
-      {msgData.sender == phone as string ? (
+      {msgData.sender === phone as string ? (
         <View style={styles.rightMsg}>
           <View style={styles.content}>
           <Text style={styles.text}>{msgData.text} </Text>

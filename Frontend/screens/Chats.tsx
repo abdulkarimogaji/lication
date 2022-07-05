@@ -25,19 +25,21 @@ export default function Chats({ navigation }: Props) {
   const phone = useSelector<RootState>(state => {{
     return state.global.phone
   }})
-  const { data: response, isLoading, isSuccess, isError, isFetching } = useGetChatsQuery(phone as string)
+  const { data: response,  isSuccess, isLoading } = useGetChatsQuery(phone as string)
+  if (isLoading) return <View></View>
   if (isSuccess) {
     console.log("respData: ", response);
+    return (
+      <View style={globalStyle.container}>
+        <FlatList
+        scrollEnabled
+        data={response?.data}
+        renderItem={({ item }) => <SingleChat navigation={navigation} chatData={item} />}
+        />
+      </View>
+    );
   }
-  return (
-    <View style={globalStyle.container}>
-      <FlatList
-      scrollEnabled
-      data={response?.data}
-      renderItem={({ item }) => <SingleChat navigation={navigation} chatData={item} />}
-      />
-    </View>
-  );
+  return <View></View>
 }
 
 

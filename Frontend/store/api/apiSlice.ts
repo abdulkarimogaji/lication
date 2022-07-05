@@ -1,31 +1,44 @@
-// Import the RTK Query methods from the React-specific entry point
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { API_URL } from "react-native-dotenv";
-// Define our single API slice object
+
+
+
+
 export const apiSlice = createApi({
-  // The cache reducer expects to be added at `state.api` (already default - this is optional)
   reducerPath: 'api',
-  // All of our requests will have URLs starting with '/fakeApi'
   baseQuery: fetchBaseQuery({ baseUrl: "https://lication-backend.herokuapp.com" }),
-  // The "endpoints" represent operations and requests for this server
+  tagTypes: ['chats', 'user'],
   endpoints: builder => ({
-    // The `getPosts` endpoint is a "query" operation that returns data
-    getChats: builder.query<MyResponse<ChatType[]>,string>({
-      // The URL for the request is '/fakeApi/posts'
-      
-      query: userId => `/${userId}/chats`
+    getChats: builder.query<MyResponse<ChatType[]>, string>({
+      query: userId => `/${userId}/chats`,
+      providesTags: (result) => result?.data
+        ? [...result.data.map(({ id }) => ({ type: 'chats' as const, id })), 'chats']
+        : ['chats'],
     }),
 
-    getSingleChat: builder.query({
-      query: chatId => `someUserId/chats/${chatId}`
+    getSingleChat: builder.query<MyResponse<ChatType>, string>({
+      query: chatId => `/chats/${chatId}`,
+      providesTags: (result) => [{ type: 'chats', id: result?.data.id }]
     }),
 
-    createMessage: builder.mutation({
+    createMessage: builder.mutation<MyResponse<Message>, Message>({
       query: body => ({
         url: '/messages',
         method: 'POST',
         body
-      })
+      }),
+      // onQueryStarted({ chat, ...patch }, { dispatch, queryFulfilled }) {
+      //   const patchResult = dispatch(
+      //     apiSlice.util.updateQueryData('getSingleChat', chat, (draft) => {
+      //       Object.assign(draft, patch)
+      //     })
+      //   )
+      //   queryFulfilled.catch(() => {
+      //     patchResult.undo()
+      //     dispatch(apiSlice.util.invalidateTags(['chats']))
+      //   })
+      // },
+
+      invalidatesTags: (result) => [{ type: 'chats', id: result?.data.chat }]
     }),
 
     login: builder.mutation<MyResponse<User>, any>({
@@ -33,12 +46,13 @@ export const apiSlice = createApi({
         url: '/login',
         method: "POST",
         body: user
-      })
+      }),
+      invalidatesTags: ["user"]
     })
   })
 })
 
-// Export the auto-generated hook for the `getPosts` query endpoint
+
 export const { useGetChatsQuery, useGetSingleChatQuery, useLoginMutation, useCreateMessageMutation } = apiSlice
 
 
@@ -73,6 +87,7 @@ export type ChatType = {
   chat_name: string;
   chat_image: string;
   messages: Message[];
+  last_message: Message;
   created_at: Date;
   updated_at: Date;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -18,7 +18,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 
 import SingleMsg from "../components/SingleMsg";
-import { useCreateMessageMutation } from "../store/api/apiSlice";
+import { useCreateMessageMutation, useGetSingleChatQuery } from "../store/api/apiSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 
@@ -30,31 +30,37 @@ export default function ChatDetails({ navigation, route }: Props) {
   const phone = useSelector<RootState>(state => state.global.phone)
 
   const [sendMessage, { isSuccess, data }] = useCreateMessageMutation()
+
+  const { data: single_chat, isSuccess: is_success, isLoading } = useGetSingleChatQuery(chat.id)
+
+
   const handleSendMessage = async () => {
     setNewMessage("")
     await sendMessage({
       text: newMessage,
       message_type: "TEXT",
       chat: chat.id,
-      sender: phone as string
+      sender: phone as string,
+      created_at: new Date().toString(),
+      id: "",
     })
+    Keyboard.dismiss()
   }
   const goBack = () => {
     navigation.goBack();
   };
+  if (isLoading) return <View></View>
   return (
     <>
       <View>
         <View style={styles.header}>
-          <TO onPress={goBack}>
+          <TO onPress={goBack} style={{ display: 'flex', flexDirection: 'row' }}>
             <MaterialIcons
               name="arrow-back"
               size={27}
               style={{ marginEnd: 5, marginTop: 10 }}
               color="white"
             />
-          </TO>
-          <TO>
             <Image source={require("../assets/images/profile.jpg")} style={styles.profilePic} />
           </TO>
           <TO style={styles.headerBody}>
@@ -89,11 +95,14 @@ export default function ChatDetails({ navigation, route }: Props) {
           source={require("../assets/images/whatsapp-bg2.jpg")}
           style={styles.container}
         >
-          <ScrollView>
-            {chat.messages.map((msg, i) => (
-              <SingleMsg msgData={msg} key={i} />
-            ))}
-          </ScrollView>
+          {
+            is_success ? (<ScrollView style={{ marginBottom: 100 }}>
+              {single_chat?.data.messages.map((msg, i) => (
+                <SingleMsg msgData={msg} key={i} />
+              ))}
+            </ScrollView>) : <Text>Loading Messages...</Text>
+          }
+
           <View style={styles.bottomInput}>
             <View style={styles.input}>
               <View style={{ display: "flex", flexDirection: "row" }}>
