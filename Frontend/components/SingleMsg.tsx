@@ -3,6 +3,7 @@ import { Text, View, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import { Message } from "../store/api/apiSlice";
 import { RootState } from "../store/store";
+import { parseDate } from "../utils/date-utils";
 
 const SingleMsg = ({ msgData }: { msgData: Message }) => {
   const phone = useSelector<RootState>(state => state.global.phone)
@@ -12,14 +13,14 @@ const SingleMsg = ({ msgData }: { msgData: Message }) => {
         <View style={styles.rightMsg}>
           <View style={styles.content}>
           <Text style={styles.text}>{msgData.text} </Text>
-          <Text style={styles.time}>{msgData.created_at}</Text>
+          <Text style={styles.time}>{parseDate(msgData.created_at)}</Text>
           </View>
         </View>
       ) : (
         <View style={styles.leftMsg}>
           <View style={styles.content}>
           <Text style={styles.text}>{msgData.text}</Text>
-          <Text style={styles.time}>{msgData.created_at}</Text>
+          <Text style={styles.time}>{parseDate(msgData.created_at)}</Text>
           </View>
         </View>
       )}

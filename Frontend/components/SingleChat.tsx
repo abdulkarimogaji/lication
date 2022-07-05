@@ -11,6 +11,7 @@ import { RootStackParamList } from "../routes/ContainerStack";
 import { ChatType } from "../store/api/apiSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import { parseDate } from "../utils/date-utils";
 
 
 type Props = {
@@ -36,7 +37,7 @@ const SingleChat = ({ chatData, navigation }: Props) => {
             <Text style={{fontWeight: 'bold'}}>{chatData.last_message.sender == phone ? "You" : chatData.last_message.sender}</Text>: {chatData.last_message.text}
           </Text>
         </View>
-        <Text style={styles.sendTime}>{chatData.last_message.created_at}</Text>
+        <Text style={styles.sendTime}>{parseDate(chatData.last_message.created_at)}</Text>
       </T>
     </View>
   );
