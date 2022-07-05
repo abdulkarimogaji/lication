@@ -125,7 +125,7 @@ func (m *Storage) GetAllUserChats(user_phone string) ([]listing.Chat, error) {
 func (m *Storage) GetChatById(chatId primitive.ObjectID) (listing.Chat, error) {
 	ctx := context.Background()
 	matchStage := bson.D{{Key: "$match", Value: bson.M{"$expr": bson.M{"$eq": bson.A{"$_id", chatId}}}}}
-	lookupMessages := bson.M{"$lookup": bson.D{{Key: "from", Value: "messages"}, {Key: "let", Value: bson.D{{Key: "chatId", Value: "$_id"}}}, {Key: "pipeline", Value: bson.A{bson.D{{Key: "$match", Value: bson.M{"$expr": bson.M{"$eq": bson.A{"$chat", "$$chatId"}}}}}, bson.D{{Key: "$sort", Value: bson.D{{Key: "created_at", Value: -1}}}}}}, {Key: "as", Value: "messages"}}}
+	lookupMessages := bson.M{"$lookup": bson.D{{Key: "from", Value: "messages"}, {Key: "let", Value: bson.D{{Key: "chatId", Value: "$_id"}}}, {Key: "pipeline", Value: bson.A{bson.D{{Key: "$match", Value: bson.M{"$expr": bson.M{"$eq": bson.A{"$chat", "$$chatId"}}}}}, bson.D{{Key: "$sort", Value: bson.D{{Key: "created_at", Value: 1}}}}}}, {Key: "as", Value: "messages"}}}
 	pipeline := bson.A{matchStage, lookupMessages}
 	cursor, err := m.chats.Aggregate(ctx, pipeline)
 	if err != nil {
