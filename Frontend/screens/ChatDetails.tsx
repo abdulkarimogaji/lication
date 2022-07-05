@@ -21,6 +21,7 @@ import SingleMsg from "../components/SingleMsg";
 import { useCreateMessageMutation, useGetSingleChatQuery } from "../store/api/apiSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import SendButton from "../components/SendButton";
 
 
 type Props = NativeStackScreenProps<RootStackParamList, "ChatDetails">;
@@ -31,7 +32,9 @@ export default function ChatDetails({ navigation, route }: Props) {
 
   const [sendMessage, { isSuccess, data }] = useCreateMessageMutation()
 
-  const { data: single_chat, isSuccess: is_success, isLoading } = useGetSingleChatQuery(chat.id)
+  const { data: single_chat, isSuccess: is_success, isLoading } = useGetSingleChatQuery(chat.id, {
+    pollingInterval: 10000,
+  })
 
 
   const handleSendMessage = async () => {
@@ -129,14 +132,7 @@ export default function ChatDetails({ navigation, route }: Props) {
                 <MaterialIcons color="#bbb" size={25} name="photo-camera" />
               </View>
             </View>
-            <View style={styles.record}>
-
-              <Button
-                title="send"
-                color="transparent"
-                onPress={handleSendMessage}
-              />
-            </View>
+            <SendButton onPress={handleSendMessage} />
             {/* <MaterialIcons
               style={styles.record}
               size={25}
@@ -185,6 +181,8 @@ const styles = StyleSheet.create({
     bottom: 10,
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
   },
   input: {
     display: "flex",
