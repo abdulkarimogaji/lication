@@ -70,3 +70,20 @@ func getAllUserChats(l listing.Service) gin.HandlerFunc {
 		})
 	}
 }
+
+func getChatById(l listing.Service) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		chatId := c.Param("chat_id")
+
+		result, err := l.GetChatById(chatId)
+
+		if err != nil {
+			errorResponse(c, err)
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"data":  result,
+			"error": nil,
+		})
+	}
+}

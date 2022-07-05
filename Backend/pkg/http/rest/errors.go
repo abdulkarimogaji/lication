@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func getValidatorErrorMsg(fe validator.FieldError, fieldName string) string {
@@ -56,9 +57,17 @@ func badRequestResponse(c *gin.Context, err error) {
 
 func errorResponse(c *gin.Context, err error) {
 	log.Println(err)
+	switch err {
+	case mongo.ErrNoDocuments:
+		c.JSON(http.StatusNotFound, gin.H{
+			"data":  nil,
+			"error": err.Error(),
+		})
+		return
+	}
 	c.JSON(http.StatusInternalServerError, gin.H{
 		"data":  nil,
-		"error": err,
+		"error": err.Error(),
 	})
 }
 
