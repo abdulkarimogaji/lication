@@ -26,12 +26,14 @@ export const apiSlice = createApi({
         method: 'POST',
         body
       }),
-      // onQueryStarted({ chat, ...patch }, { dispatch, queryFulfilled }) {
+      // onQueryStarted(newMessage, { dispatch, queryFulfilled }) {
       //   const patchResult = dispatch(
-      //     apiSlice.util.updateQueryData('getSingleChat', chat, (draft) => {
-      //       Object.assign(draft, patch)
+      //     apiSlice.util.updateQueryData('getSingleChat', newMessage.id, (draft) => {
+      //       // Object.assign(draft, patch)
+      //       draft.data.messages.push(newMessage)
       //     })
       //   )
+      //   console.log("got here")
       //   queryFulfilled.catch(() => {
       //     patchResult.undo()
       //     dispatch(apiSlice.util.invalidateTags(['chats']))
@@ -48,12 +50,21 @@ export const apiSlice = createApi({
         body: user
       }),
       invalidatesTags: ["user"]
+    }),
+
+    createChat: builder.mutation<MyResponse<ChatType>,ChatType>({
+      query: body => ({
+        url: '/chats',
+        method: 'POST',
+        body
+      }),
+      invalidatesTags: (result) => [{ type: 'chats', id: result?.data.id }]
     })
   })
 })
 
 
-export const { useGetChatsQuery, useGetSingleChatQuery, useLoginMutation, useCreateMessageMutation } = apiSlice
+export const { useGetChatsQuery, useGetSingleChatQuery, useLoginMutation, useCreateMessageMutation, useCreateChatMutation } = apiSlice
 
 
 type MyResponse<T> = {

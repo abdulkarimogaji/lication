@@ -25,7 +25,9 @@ export default function Chats({ navigation }: Props) {
   const phone = useSelector<RootState>(state => {{
     return state.global.phone
   }})
-  const { data: response,  isSuccess, isLoading } = useGetChatsQuery(phone as string)
+  const { data: response,  isSuccess, isLoading } = useGetChatsQuery(phone as string, {
+    pollingInterval: 10000,
+  })
   if (isLoading) return <View></View>
   if (isSuccess) {
     console.log("respData: ", response);
