@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
+import { Contact } from 'react-native-contacts';
 export interface GlobalState {
   credentials: Credentials,
   phone: string,
-  contacts: { name: string; phone: string}[],
+  contacts: Contact[],
   isLoggedIn: boolean
   id: string;
 }
@@ -28,10 +28,14 @@ export const globalSlice = createSlice({
       state.isLoggedIn = true
       state.id = action.payload.id
       state.phone = action.payload.phone
+    },
+
+    setContacts: (state: GlobalState, action: PayloadAction<Contact[]>) => {
+      state.contacts = action.payload
     }
   },
 })
 
 
-export const { loginAction } = globalSlice.actions
+export const { loginAction, setContacts } = globalSlice.actions
 export default globalSlice.reducer

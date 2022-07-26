@@ -12,6 +12,8 @@ import { ChatType } from "../store/api/apiSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { parseDate } from "../utils/date-utils";
+import { Contact } from "react-native-contacts";
+import { getChatName } from "../utils/utils";
 
 
 type Props = {
@@ -21,18 +23,19 @@ type Props = {
 
 
 const SingleChat = ({ chatData, navigation }: Props) => {
+  
+
+  const {phone, contacts} = useSelector((state: RootState) => state.global)
+  const chatName = getChatName(phone, chatData, contacts)
   const goToChatDetails = () => {
-    navigation.navigate("ChatDetails", { chat: chatData});
+    navigation.navigate("ChatDetails", { chat: {...chatData, chat_name: chatName}});
   };
-
-  const phone = useSelector((state: RootState) => state.global.phone)
-
   return (
     <View style={styles.chat}>
       <Image style={styles.chatImage} source={require("../assets/images/profile.jpg")} />
       <T onPress={goToChatDetails} style={styles.content}>
         <View>
-          <Text style={styles.chatName}>{chatData.chat_name}</Text>
+          <Text style={styles.chatName}>{chatName}</Text>
           <Text>
             <Text style={{fontWeight: 'bold'}}>{chatData.last_message.sender == phone ? "You" : chatData.last_message.sender}</Text>: {chatData.last_message.text}
           </Text>

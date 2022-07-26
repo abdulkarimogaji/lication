@@ -6,7 +6,7 @@ import { View, Text, StyleSheet, Keyboard } from "react-native";
 import { TouchableWithoutFeedback as TWF } from "react-native-gesture-handler";
 
 const WelcomeScreen = ({ navigation }: StackScreenProps<any>) => {
-  const { getItem } = useAsyncStorage("@lication_credentials")
+  const { getItem } = useAsyncStorage("@lication_data")
   const checkCredentials = async() => {
     const cred = await getItem()
     if (cred) {
@@ -32,7 +32,7 @@ const WelcomeScreen = ({ navigation }: StackScreenProps<any>) => {
           of Service
         </Text>
         <View style={styles.button}>
-          <Button title="AGREE AND CONTINUE" onPress={goToSignUp} color="#128C7E" />
+          <Button title="AGREE AND CONTINUE" onPress={goToSignUp} color="#5f551aa2" />
         </View>
       </TWF>
     </View>

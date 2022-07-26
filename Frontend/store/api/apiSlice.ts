@@ -52,13 +52,13 @@ export const apiSlice = createApi({
       invalidatesTags: ["user"]
     }),
 
-    createChat: builder.mutation<MyResponse<ChatType>,ChatType>({
+    createChat: builder.mutation<MyResponse<ChatType>,CreateChatType>({
       query: body => ({
         url: '/chats',
         method: 'POST',
         body
       }),
-      invalidatesTags: (result) => [{ type: 'chats', id: result?.data.id }]
+      invalidatesTags: () => ['chats']
     })
   })
 })
@@ -101,4 +101,11 @@ export type ChatType = {
   last_message: Message;
   created_at: Date;
   updated_at: Date;
+}
+
+type CreateChatType = {
+  first_party: string;
+  second_party: string;
+  chat_type: string;
+  first_message_text: string;
 }
