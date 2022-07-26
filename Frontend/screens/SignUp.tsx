@@ -37,7 +37,7 @@ const SignUp = ({ navigation }: NativeStackScreenProps<any, any, any>) => {
         </Text>
         <View style={[styles.center, { marginTop: 150 }]}>
           <View style={styles.button}>
-            <Button title="NEXT" color="#128C7E" onPress={handlePress} />
+            <Button title="NEXT" color="#5f551aa2" onPress={handlePress} />
           </View>
         </View>
       </TWF>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 19,
     padding: 10,
-    color: "#128C7E",
+    color: "#5f551aa2",
     textAlign: "center",
     marginBottom: 20,
     fontWeight: "500",
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginHorizontal: 15,
     paddingEnd: 50,
-    borderColor: "#128C7E",
+    borderColor: "#5f551aa2",
   },
   code: {
     paddingEnd: 0,

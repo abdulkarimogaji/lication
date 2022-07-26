@@ -1,14 +1,17 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import HomeTabs from "./HomeTabs";
 import MainHeader from "../components/MainHeader";
 import ChatDetails from "../screens/ChatDetails";
-import { ChatType, Message } from "../store/api/apiSlice";
+import { ChatType } from "../store/api/apiSlice";
+import Contacts from "../screens/Contacts";
+import CreateChat from "../screens/CreateChat";
 
 export type RootStackParamList = {
   ChatTabs: {};
   ChatDetails: { chat: ChatType};
+  Contacts: {};
+  CreateChat: { phone: string, name: string };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -24,6 +27,8 @@ const RootStack = () => {
       >
         <Stack.Screen name="ChatTabs" component={HomeTabs} />
         <Stack.Screen name="ChatDetails" component={ChatDetails} />
+        <Stack.Screen name="Contacts" component={Contacts} />
+        <Stack.Screen name="CreateChat" component={CreateChat} />
       </Stack.Navigator>
   );
 };

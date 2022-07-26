@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -10,9 +10,8 @@ import {
   ScrollView,
   TouchableOpacity as TO,
   TouchableWithoutFeedback as TWF,
-  Button,
 } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialIcons from "react-native-vector-icons/Ionicons";
 import { RootStackParamList } from "../routes/ContainerStack";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
@@ -33,7 +32,7 @@ export default function ChatDetails({ navigation, route }: Props) {
   const [sendMessage, { isSuccess, data }] = useCreateMessageMutation()
 
   const { data: single_chat, isSuccess: is_success, isLoading } = useGetSingleChatQuery(chat.id, {
-    pollingInterval: 10000,
+    // pollingInterval: 10000,
   })
 
 
@@ -103,7 +102,7 @@ export default function ChatDetails({ navigation, route }: Props) {
               {single_chat?.data.messages.map((msg, i) => (
                 <SingleMsg msgData={msg} key={i} />
               ))}
-            </ScrollView>) : <Text>Loading Messages...</Text>
+            </ScrollView>) : <SingleMsg msgData={chat.last_message} />
           }
 
           <View style={styles.bottomInput}>
@@ -147,7 +146,7 @@ export default function ChatDetails({ navigation, route }: Props) {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#128C7E",
+    backgroundColor: "#5f551aa2",
     height: 90,
     width: "100%",
     flexDirection: "row",

@@ -13,7 +13,7 @@ const HomeTabs = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: "#128C7E",
+          backgroundColor: "#5f551aa2",
         },
         tabBarActiveTintColor: "#fff",
         tabBarInactiveTintColor: "#eee",

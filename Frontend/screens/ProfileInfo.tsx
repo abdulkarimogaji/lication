@@ -17,7 +17,7 @@ import { useLoginMutation } from "../store/api/apiSlice";
 const ProfileInfo = ({ navigation, route }: StackScreenProps<any>) => {
   const [name, setName] = useState<string>("");
   const [login, { isSuccess, data: loginResponse }] = useLoginMutation()
-  const { setItem } = useAsyncStorage("@lication_credentials")
+  const { setItem } = useAsyncStorage("@lication_data")
   const handlePress = async() => {
     await login({
       display_name: name,
@@ -26,7 +26,7 @@ const ProfileInfo = ({ navigation, route }: StackScreenProps<any>) => {
     
   };
   if (isSuccess) {
-      const credentials = {_id: loginResponse?.data.id, phone: loginResponse?.data.phone}
+      const credentials = {id: loginResponse?.data.id, phone: loginResponse?.data.phone}
       setItem(JSON.stringify(credentials))
       navigation.navigate('main-app', {screen: 'ChatTabs'})
       // display loading here
@@ -57,7 +57,7 @@ const ProfileInfo = ({ navigation, route }: StackScreenProps<any>) => {
           </View>
           <View style={[styles.center, { marginTop: 150 }]}>
             <View style={styles.button}>
-              <Button title="NEXT" color="#128C7E" onPress={handlePress} />
+              <Button title="NEXT" color="#5f551aa2" onPress={handlePress} />
             </View>
           </View>
         </View>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 19,
     padding: 10,
-    color: "#128C7E",
+    color: "#5f551aa2",
     textAlign: "center",
     marginBottom: 20,
     fontWeight: "500",
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginHorizontal: 15,
     paddingEnd: 50,
-    borderColor: "#128C7E",
+    borderColor: "#5f551aa2",
     width: "80%"
   },
   button: {
