@@ -16,22 +16,24 @@ import { useLoginMutation } from "../store/api/apiSlice";
 
 const ProfileInfo = ({ navigation, route }: StackScreenProps<any>) => {
   const [name, setName] = useState<string>("");
-  const [login, { isSuccess, data: loginResponse }] = useLoginMutation()
-  const { setItem } = useAsyncStorage("@lication_data")
-  const handlePress = async() => {
+  const [login, { isSuccess, data: loginResponse }] = useLoginMutation();
+  const { setItem } = useAsyncStorage("@lication_data");
+  const handlePress = async () => {
     await login({
       display_name: name,
-      phone: "+234" + route.params?.phone
-    })
-    
+      phone: "+234" + route.params?.phone,
+    });
   };
   if (isSuccess) {
-      const credentials = {id: loginResponse?.data.id, phone: loginResponse?.data.phone}
-      setItem(JSON.stringify(credentials))
-      navigation.navigate('main-app', {screen: 'ChatTabs'})
-      // display loading here
-      return <View></View>
-    }
+    const credentials = {
+      id: loginResponse?.data.id,
+      phone: loginResponse?.data.phone,
+    };
+    setItem(JSON.stringify(credentials));
+    navigation.navigate("main-app", { screen: "ChatTabs" });
+    // display loading here
+    return <></>;
+  }
 
   return (
     <View style={styles.container}>
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    position: "relative"
+    position: "relative",
   },
   textCenter: {
     textAlign: "center",
@@ -98,12 +100,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     paddingEnd: 50,
     borderColor: "#5f551aa2",
-    width: "80%"
+    width: "80%",
   },
   button: {
     width: 100,
     position: "absolute",
-    bottom: 0
+    bottom: 0,
   },
   imageContainer: {
     marginTop: 50,
@@ -117,9 +119,7 @@ const styles = StyleSheet.create({
     height: 110,
   },
 
-  nextButton: {
-    
-  }
+  nextButton: {},
 });
 
 export default ProfileInfo;
