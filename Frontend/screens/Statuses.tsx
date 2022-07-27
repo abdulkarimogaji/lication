@@ -10,9 +10,8 @@ import {
 import { globalStyle } from "../styles/global";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../routes/ContainerStack";
-import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialIcons from "../components/MaterialIcon";
 import SingleStatus from "../components/SingleStatus";
-
 
 export type StatusType = {
   key: number;
@@ -101,7 +100,12 @@ export default function Statuses({ navigation, route }: Props) {
   return (
     <View style={globalStyle.container}>
       <View style={styles.chat}>
-        <MaterialIcons name="add-circle" style={styles.icon} size={25} color='green' />
+        <MaterialIcons
+          name="add-circle"
+          style={styles.icon}
+          size={25}
+          color="green"
+        />
         <Image
           style={styles.statusImage}
           source={require("../assets/icon.png")}
@@ -115,26 +119,41 @@ export default function Statuses({ navigation, route }: Props) {
       </View>
 
       <ScrollView>
-      <Text>Recent updates</Text>
-      {statuses
-        ?.filter((status) => status.type === "RECENT")
-        .map((status) => (
-          <SingleStatus status={status} key={status.key} navigation={navigation} setStatus={setStatuses} />
-        ))}
-      <Text>Viewed</Text>
+        <Text>Recent updates</Text>
+        {statuses
+          ?.filter((status) => status.type === "RECENT")
+          .map((status) => (
+            <SingleStatus
+              status={status}
+              key={status.key}
+              navigation={navigation}
+              setStatus={setStatuses}
+            />
+          ))}
+        <Text>Viewed</Text>
 
-      {statuses
-        ?.filter((status) => status.type === "VIEWED")
-        .map((status) => (
-          <SingleStatus status={status} key={status.key} navigation={navigation} setStatus={setStatuses}/>
-        ))}
-      <Text>Muted</Text>
+        {statuses
+          ?.filter((status) => status.type === "VIEWED")
+          .map((status) => (
+            <SingleStatus
+              status={status}
+              key={status.key}
+              navigation={navigation}
+              setStatus={setStatuses}
+            />
+          ))}
+        <Text>Muted</Text>
 
-      {statuses
-        ?.filter((status) => status.type === "MUTED")
-        .map((status) => (
-          <SingleStatus status={status} key={status.key} navigation={navigation} setStatus={setStatuses}/>
-        ))}
+        {statuses
+          ?.filter((status) => status.type === "MUTED")
+          .map((status) => (
+            <SingleStatus
+              status={status}
+              key={status.key}
+              navigation={navigation}
+              setStatus={setStatuses}
+            />
+          ))}
       </ScrollView>
     </View>
   );
@@ -147,13 +166,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 20,
-    position: 'relative'
+    position: "relative",
   },
   icon: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 10,
     left: 45,
-    zIndex: 100
+    zIndex: 100,
   },
   content: {
     width: "78%",

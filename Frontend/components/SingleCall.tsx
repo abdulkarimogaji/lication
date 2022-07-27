@@ -7,7 +7,7 @@ import {
   TouchableOpacity as T,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialIcons from "../components/MaterialIcon";
 import { CallType } from "../screens/Calls";
 
 type Props = {
@@ -15,36 +15,41 @@ type Props = {
   navigation: StackNavigationProp<any, any, any>;
 };
 
-
-
-export const SingleCall = ({ callData, navigation }: Props) => {
+export const SingleCall = ({ callData }: Props) => {
   const goToChatDetails = () => {};
 
   return (
     <View style={styles.container}>
       <Image style={styles.chatImage} source={callData.callerImage} />
-      <T onPress={goToChatDetails} style={styles.content}>
+      <T onPress={goToChatDetails} style={styles.content} activeOpacity={0.7}>
         <View>
           <Text style={styles.chatName}>{callData.caller}</Text>
           <Text>
-            <View style={{display: 'flex', flexDirection: 'row'}}>
-            {callData.type === "SENDER" ? (
-              <MaterialIcons name="call-made" size={20} style={{marginRight: 10}} color={callData.status === 'MISSED' ? 'red': 'green'}/>
-            ) : (
-              <MaterialIcons name="call-received" size={20} style={{marginRight: 10}} color={callData.status === 'MISSED' ? 'red': 'green'} />
-            )}
-            <Text>{callData.time}</Text>
+            <View style={{ display: "flex", flexDirection: "row" }}>
+              {callData.type === "SENDER" ? (
+                <MaterialIcons
+                  name="call-made"
+                  size={20}
+                  style={{ marginRight: 10 }}
+                  color={callData.status === "MISSED" ? "red" : "green"}
+                />
+              ) : (
+                <MaterialIcons
+                  name="call-received"
+                  size={20}
+                  style={{ marginRight: 10 }}
+                  color={callData.status === "MISSED" ? "red" : "green"}
+                />
+              )}
+              <Text>{callData.time}</Text>
             </View>
-            
           </Text>
         </View>
-        <MaterialIcons name="local-phone" size={22} style={styles.phoneIcon} />
+        <MaterialIcons name="phone" size={22} style={styles.phoneIcon} />
       </T>
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -71,5 +76,5 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 998,
-  }
+  },
 });
