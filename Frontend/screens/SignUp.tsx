@@ -1,46 +1,40 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Button, Keyboard } from "react-native";
-import {
-  TextInput,
-  TouchableWithoutFeedback as TWF,
-} from "react-native-gesture-handler";
-
+import { View, Text, StyleSheet, Button } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 
 const SignUp = ({ navigation }: NativeStackScreenProps<any, any, any>) => {
   const [num, setNum] = useState<string>("");
   const handlePress = () => {
-    navigation.navigate("signup-profile-info", { phone: num })
+    navigation.navigate("signup-profile-info", { phone: num });
   };
   return (
     <View style={styles.container}>
-      <TWF onPress={Keyboard.dismiss}>
-        <Text style={styles.header}>Enter your phone number</Text>
-        <Text style={styles.textCenter}>
-          Lication will need your phone number to get you started
-        </Text>
-        <View style={styles.center}>
-          <Text style={styles.location}>Nigeria</Text>
+      <Text style={styles.header}>Enter your phone number</Text>
+      <Text style={styles.textCenter}>
+        Lication will need your phone number to get you started
+      </Text>
+      <View style={styles.center}>
+        <Text style={styles.location}>Nigeria</Text>
+      </View>
+      <View style={styles.center}>
+        <Text style={[styles.phoneNumber, styles.code]}>+234</Text>
+        <TextInput
+          placeholder="phone number"
+          value={num}
+          onChangeText={(curr) => setNum(curr)}
+          style={styles.phoneNumber}
+          keyboardType="number-pad"
+        />
+      </View>
+      <Text style={[styles.textCenter, { marginVertical: 20 }]}>
+        No charges may apply
+      </Text>
+      <View style={[styles.center, { marginTop: 150 }]}>
+        <View style={styles.button}>
+          <Button title="NEXT" color="#5f551aa2" onPress={handlePress} />
         </View>
-        <View style={styles.center}>
-          <Text style={[styles.phoneNumber, styles.code]}>+234</Text>
-          <TextInput
-            placeholder="phone number"
-            value={num}
-            onChangeText={(curr) => setNum(curr)}
-            style={styles.phoneNumber}
-            keyboardType="number-pad"
-          />
-        </View>
-        <Text style={[styles.textCenter, { marginVertical: 20 }]}>
-          No charges may apply
-        </Text>
-        <View style={[styles.center, { marginTop: 150 }]}>
-          <View style={styles.button}>
-            <Button title="NEXT" color="#5f551aa2" onPress={handlePress} />
-          </View>
-        </View>
-      </TWF>
+      </View>
     </View>
   );
 };

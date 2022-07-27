@@ -10,18 +10,15 @@
 import { store } from "./store/store";
 import { Provider } from "react-redux";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ParentStack from "./routes/ParentStack";
-import { useAsyncStorage } from "@react-native-async-storage/async-storage";
-
 
 const App = () => {
   return (
     <Provider store={store}>
       <ParentStack initialRoute="welcome-stack" />
-    </Provider>)
+    </Provider>
+  );
 };
-
-
 
 export default App;
