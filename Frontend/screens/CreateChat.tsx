@@ -1,6 +1,16 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Keyboard, View, Text, Image, ImageBackground, TouchableOpacity as TO, TouchableWithoutFeedback as TWF, StyleSheet, Button } from "react-native";
+import {
+  Keyboard,
+  View,
+  Text,
+  Image,
+  ImageBackground,
+  TouchableOpacity as TO,
+  TouchableWithoutFeedback as TWF,
+  StyleSheet,
+  Button,
+} from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import MaterialIcons from "../components/MaterialIcon";
@@ -8,40 +18,50 @@ import SendButton from "../components/SendButton";
 import { RootStackParamList } from "../routes/ContainerStack";
 import { useCreateChatMutation } from "../store/api/apiSlice";
 import { RootState } from "../store/store";
-import React from 'react'
+import React from "react";
 
-const CreateChat = ({ navigation, route }: NativeStackScreenProps<RootStackParamList, "CreateChat">) => {
-  const [newMessage, setNewMessage] = useState("")
-  const first_party = useSelector((state: RootState) => state.global.phone)
-  const { phone, name } = route.params
+const CreateChat = ({
+  navigation,
+  route,
+}: NativeStackScreenProps<RootStackParamList, "CreateChat">) => {
+  const [newMessage, setNewMessage] = useState("");
+  const first_party = useSelector((state: RootState) => state.global.phone);
+  const { phone, name } = route.params;
 
-  const [createChat, { isSuccess, isLoading }] = useCreateChatMutation()
-  const handleCreateChat = async() => {
-    setNewMessage("")
+  const [createChat, { isSuccess, isLoading }] = useCreateChatMutation();
+  const handleCreateChat = async () => {
+    setNewMessage("");
     await createChat({
       first_party,
       second_party: phone,
       chat_type: "TEXT",
       first_message_text: newMessage,
-    })
-    Keyboard.dismiss()
-  }
+    });
+    Keyboard.dismiss();
+  };
 
   if (isSuccess) {
-    navigation.navigate("ChatTabs", {})
+    navigation.navigate("ChatTabs", {});
   }
-  
-  return (<>
-  <View>
+
+  return (
+    <>
+      <View>
         <View style={styles.header}>
-          <TO onPress={navigation.goBack} style={{ display: 'flex', flexDirection: 'row' }}>
+          <TO
+            onPress={navigation.goBack}
+            style={{ display: "flex", flexDirection: "row" }}
+          >
             <MaterialIcons
               name="arrow-back"
               size={27}
               style={{ marginEnd: 5, marginTop: 10 }}
               color="white"
             />
-            <Image source={require("../assets/images/profile.jpg")} style={styles.profilePic} />
+            <Image
+              source={require("../assets/images/profile.jpg")}
+              style={styles.profilePic}
+            />
           </TO>
           <TO style={styles.headerBody}>
             <Text style={styles.headerText}>
@@ -62,7 +82,7 @@ const CreateChat = ({ navigation, route }: NativeStackScreenProps<RootStackParam
               size={22}
               style={{ marginEnd: 11 }}
               color="white"
-              name="local-phone"
+              name="phone"
             />
           </TO>
           <TO>
@@ -75,7 +95,6 @@ const CreateChat = ({ navigation, route }: NativeStackScreenProps<RootStackParam
           source={require("../assets/images/whatsapp-bg2.jpg")}
           style={styles.container}
         >
-
           <View style={styles.bottomInput}>
             <View style={styles.input}>
               <View style={{ display: "flex", flexDirection: "row" }}>
@@ -89,7 +108,7 @@ const CreateChat = ({ navigation, route }: NativeStackScreenProps<RootStackParam
                   placeholder="Message"
                   style={{ width: 170, fontSize: 18 }}
                   value={newMessage}
-                  onChangeText={text => setNewMessage(text)}
+                  onChangeText={(text) => setNewMessage(text)}
                 />
               </View>
               <View style={{ display: "flex", flexDirection: "row" }}>
@@ -108,7 +127,7 @@ const CreateChat = ({ navigation, route }: NativeStackScreenProps<RootStackParam
       </TWF>
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   header: {
@@ -147,7 +166,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   input: {
     display: "flex",

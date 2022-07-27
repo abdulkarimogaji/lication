@@ -15,38 +15,44 @@ import { parseDate } from "../utils/date-utils";
 import { Contact } from "react-native-contacts";
 import { getChatName } from "../utils/utils";
 
-
 type Props = {
   chatData: ChatType;
   navigation: StackNavigationProp<RootStackParamList, any, any>;
 };
 
-
 const SingleChat = ({ chatData, navigation }: Props) => {
-  
-
-  const {phone, contacts} = useSelector((state: RootState) => state.global)
-  const chatName = getChatName(phone, chatData, contacts)
+  const { phone, contacts } = useSelector((state: RootState) => state.global);
+  const chatName = getChatName(phone, chatData, contacts);
   const goToChatDetails = () => {
-    navigation.navigate("ChatDetails", { chat: {...chatData, chat_name: chatName}});
+    navigation.navigate("ChatDetails", {
+      chat: { ...chatData, chat_name: chatName },
+    });
   };
   return (
     <View style={styles.chat}>
-      <Image style={styles.chatImage} source={require("../assets/images/profile.jpg")} />
-      <T onPress={goToChatDetails} style={styles.content}>
+      <Image
+        style={styles.chatImage}
+        source={require("../assets/images/profile.jpg")}
+      />
+      <T onPress={goToChatDetails} style={styles.content} activeOpacity={0.7}>
         <View>
           <Text style={styles.chatName}>{chatName}</Text>
           <Text>
-            <Text style={{fontWeight: 'bold'}}>{chatData.last_message.sender == phone ? "You" : chatData.last_message.sender}</Text>: {chatData.last_message.text}
+            <Text style={{ fontWeight: "bold" }}>
+              {chatData.last_message.sender == phone
+                ? "You"
+                : chatData.last_message.sender}
+            </Text>
+            : {chatData.last_message.text}
           </Text>
         </View>
-        <Text style={styles.sendTime}>{parseDate(chatData.last_message.created_at)}</Text>
+        <Text style={styles.sendTime}>
+          {parseDate(chatData.last_message.created_at)}
+        </Text>
       </T>
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   chat: {

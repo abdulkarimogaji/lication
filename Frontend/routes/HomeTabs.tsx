@@ -1,10 +1,9 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Chats from "../screens/Chats";
-import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Statuses from "../screens/Statuses";
-import Calls from "../screens/Calls"
-
+import Calls from "../screens/Calls";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -14,6 +13,7 @@ const HomeTabs = () => {
       screenOptions={{
         tabBarStyle: {
           backgroundColor: "#5f551aa2",
+          elevation: 0,
         },
         tabBarActiveTintColor: "#fff",
         tabBarInactiveTintColor: "#eee",
@@ -24,21 +24,24 @@ const HomeTabs = () => {
           borderRadius: 5,
         },
         tabBarContentContainerStyle: {
-          paddingStart: 20
+          paddingStart: 20,
         },
-        tabBarLabelStyle: { fontWeight: "bold", position: 'relative' },
+        tabBarLabelStyle: { fontWeight: "bold", position: "relative" },
       }}
     >
-      <Tab.Screen name="Chats" component={Chats} 
-      options={{
-        tabBarIcon: () => <MaterialIcons name="photo-camera" size={25} color="#ddd" />,
-        tabBarIconStyle: {
-          position: 'absolute',
-          left: -60,
-          top: 6,
-
-        }
-      }}
+      <Tab.Screen
+        name="Chats"
+        component={Chats}
+        options={{
+          tabBarIcon: () => (
+            <MaterialIcons name="camera" size={25} color="#ddd" />
+          ),
+          tabBarIconStyle: {
+            position: "absolute",
+            left: -60,
+            top: 6,
+          },
+        }}
       />
       <Tab.Screen name="Status" component={Statuses} />
       <Tab.Screen name="Calls" component={Calls} />

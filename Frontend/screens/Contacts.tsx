@@ -1,34 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { PermissionsAndroid, StyleSheet, View, TouchableOpacity as TO, Text } from 'react-native';
-import conts from 'react-native-contacts';
-import { ScrollView } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
-import MaterialIcons from '../components/MaterialIcon';
-import SingleContact from '../components/SingleContact';
-import { RootState } from '../store/store';
-
+import React from "react";
+import { StyleSheet, View, TouchableOpacity as TO, Text } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { useSelector } from "react-redux";
+import MaterialIcons from "../components/MaterialIcon";
+import SingleContact from "../components/SingleContact";
+import { RootState } from "../store/store";
 
 const Contacts = ({ navigation }: any) => {
-  const contacts = useSelector((state: RootState) => state.global.contacts)
+  const contacts = useSelector((state: RootState) => state.global.contacts);
   return (
     <View>
       <View style={styles.header}>
-        <TO onPress={navigation.goBack}>
-        <MaterialIcons size={22}
-          style={{ marginEnd: 11 }}
-          color="white"
-          name="videocam" />
+        <TO onPress={navigation.goBack} activeOpacity={0.7}>
+          <MaterialIcons
+            size={22}
+            style={{ marginEnd: 11 }}
+            color="white"
+            name="arrow-back"
+          />
         </TO>
-      <Text style={styles.headerText}>Select Contacts</Text>
+        <Text style={styles.headerText}>Select Contacts</Text>
       </View>
       <ScrollView>
         <Text>Contacts on Lication</Text>
-        {contacts.map((con, idx) => <SingleContact navigation={navigation} key={idx} contact={con}/>)}
+        {contacts.map((con, idx) => (
+          <SingleContact navigation={navigation} key={idx} contact={con} />
+        ))}
       </ScrollView>
     </View>
-  )
-}
-
+  );
+};
 
 const styles = StyleSheet.create({
   header: {
@@ -38,14 +39,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingTop: 20,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   headerText: {
     color: "white",
     fontWeight: "bold",
     fontSize: 20,
   },
-
-})
+});
 
 export default Contacts;

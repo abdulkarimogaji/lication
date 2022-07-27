@@ -36,40 +36,42 @@ const SingleStatus = ({ status, navigation, setStatus }: Props) => {
       statuses[index].type = type;
       return statuses;
     });
-  }
+  };
   function closeModal() {
-      setStatusType("VIEWED")
+    setStatusType("VIEWED");
 
     setModalOpen(false);
   }
 
-
-
-
   const displayAlert = () => {
-    const isMuted = status.type === 'MUTED'
-    const title = isMuted  ?  `Unmute ${status.author}'s status updates?` : `Mute ${status.author}'s status updates?`
-    const message = isMuted  ?  `Mute ${status.author}'s status updates?` : `New status updates from ${status.author} won't appear under recent updates anymore.`
-    const actionBtn = isMuted ? setStatusType('RECENT') : setStatusType('MUTED')
-    Alert.alert(
-      title
-      ,
-      message,
-      [
-        {
-          text: 'cancel',
-          onPress: () => {},
-        },
-        {
-          text: isMuted ? 'unmute' : 'mute',
-          onPress: () => actionBtn
-        }
-      ]
-    );
+    const isMuted = status.type === "MUTED";
+    const title = isMuted
+      ? `Unmute ${status.author}'s status updates?`
+      : `Mute ${status.author}'s status updates?`;
+    const message = isMuted
+      ? `Mute ${status.author}'s status updates?`
+      : `New status updates from ${status.author} won't appear under recent updates anymore.`;
+    const actionBtn = isMuted
+      ? setStatusType("RECENT")
+      : setStatusType("MUTED");
+    Alert.alert(title, message, [
+      {
+        text: "cancel",
+        onPress: () => {},
+      },
+      {
+        text: isMuted ? "unmute" : "mute",
+        onPress: () => actionBtn,
+      },
+    ]);
   };
 
   return (
-    <T onPress={() => setModalOpen(true)} onLongPress={displayAlert}>
+    <T
+      onPress={() => setModalOpen(true)}
+      onLongPress={displayAlert}
+      activeOpacity={0.7}
+    >
       <View style={styles.container}>
         <Modal
           statusBarTranslucent={true}
@@ -80,15 +82,12 @@ const SingleStatus = ({ status, navigation, setStatus }: Props) => {
         >
           <View style={[globalStyle.container, styles.modalView]}>
             <Text style={styles.modalText}>
-              My Name is Abdulkarim I love to eat garri and play with my nose My
-              Name is Abdulkarim I love to eat garri and play with my nose My
-              Name is Abdulkarim I love to eat garri and play with my nose My
-              Name is Abdulkarim I love to eat garri and play with my nose My
-              Name is Abdulkarim I love to eat garri and play with my nose My
-              Name is Abdulkarim I love to eat garri and play with my nose My
-              Name is Abdulkarim I love to eat garri and play with my nose My
-              Name is Abdulkarim I love to eat garri and play with my nose My
-              Name is Abdulkarim I love to eat garri and play with my nose
+              (Apple TV only) Object with properties to control Apple TV
+              parallax effects. enabled: If true, parallax effects are enabled.
+              Defaults to true. shiftDistanceX: Defaults to 2.0. shiftDistanceY:
+              Defaults to 2.0. tiltAngle: Defaults to 0.05. magnification:
+              Defaults to 1.0. pressMagnification: Defaults to 1.0.
+              pressDuration: Defaults to 0.3. pressDelay: Defaults to 0.0.
             </Text>
             <View style={styles.modalBottom}>
               <T onPress={() => showInput()}>

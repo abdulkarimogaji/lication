@@ -78,6 +78,7 @@ export default function Chats({ navigation }: Props) {
             onPress={() => {
               navigation.navigate("Contacts", {});
             }}
+            type="chat"
           />
         </View>
       </View>
